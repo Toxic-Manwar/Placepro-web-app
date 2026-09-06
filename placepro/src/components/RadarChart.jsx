@@ -101,11 +101,13 @@ export default function RadarChart({ assessmentData }) {
   }, [assessmentData]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={380}
-      height={300}
-      style={{ display: 'block', margin: '0 auto' }}
-    />
+    <div style={{ width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}>
+      <canvas
+        ref={canvasRef}
+        width={380}
+        height={300}
+        style={{ display: 'block', maxWidth: '100%', height: 'auto' }}
+      />
+    </div>
   );
 }

@@ -53,11 +53,13 @@ export default function PlacementBarChart() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={480}
-      height={260}
-      style={{ display: 'block', margin: '0 auto' }}
-    />
+    <div style={{ width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}>
+      <canvas
+        ref={canvasRef}
+        width={480}
+        height={260}
+        style={{ display: 'block', maxWidth: '100%', height: 'auto' }}
+      />
+    </div>
   );
 }
