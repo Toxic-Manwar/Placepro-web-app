@@ -1,0 +1,266 @@
+{
+  "database_name": "academia_industry_portal_db",
+  "version": "1.0",
+  "description": "Relational and document database schema for Academia-Industry Collaboration Portal",
+  "tables": {
+    "users": {
+      "table_name": "users",
+      "primary_key": "user_id",
+      "fields": {
+        "user_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true, "description": "Primary Key UUID" },
+        "email": { "type": "VARCHAR(255)", "nullable": false, "unique": true },
+        "password_hash": { "type": "VARCHAR(255)", "nullable": false },
+        "full_name": { "type": "VARCHAR(255)", "nullable": false },
+        "phone": { "type": "VARCHAR(20)", "nullable": true },
+        "user_type": { "type": "ENUM('student', 'industry', 'academician', 'institution', 'admin')", "nullable": false },
+        "profile_picture_url": { "type": "VARCHAR(500)", "nullable": true },
+        "is_verified": { "type": "BOOLEAN", "default": false },
+        "created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
+        "last_login": { "type": "TIMESTAMP", "nullable": true },
+        "account_status": { "type": "ENUM('active', 'inactive', 'suspended')", "default": "active" }
+      },
+      "indexes": ["email", "user_type", "account_status"]
+    },
+    "student_profiles": {
+      "table_name": "student_profiles",
+      "primary_key": "student_id",
+      "fields": {
+        "student_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "user_id": { "type": "VARCHAR(36)", "foreign_key": "users.user_id", "nullable": false },
+        "registration_number": { "type": "VARCHAR(50)", "nullable": false, "unique": true },
+        "department": { "type": "VARCHAR(100)", "nullable": false },
+        "semester": { "type": "INT", "nullable": false },
+        "institution_id": { "type": "VARCHAR(36)", "foreign_key": "institution_profiles.institution_id", "nullable": false },
+        "dob": { "type": "DATE", "nullable": true },
+        "gender": { "type": "VARCHAR(20)", "nullable": true },
+        "address": { "type": "TEXT", "nullable": true },
+        "city": { "type": "VARCHAR(100)", "nullable": true },
+        "state": { "type": "VARCHAR(100)", "nullable": true },
+        "country": { "type": "VARCHAR(100)", "nullable": true },
+        "resume_url": { "type": "VARCHAR(500)", "nullable": true },
+        "portfolio_link": { "type": "VARCHAR(500)", "nullable": true },
+        "github_url": { "type": "VARCHAR(500)", "nullable": true },
+        "linkedin_url": { "type": "VARCHAR(500)", "nullable": true },
+        "cgpa": { "type": "DECIMAL(3,2)", "nullable": true },
+        "backlogs": { "type": "INT", "default": 0 },
+        "created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }
+      },
+      "indexes": ["user_id", "institution_id", "department"]
+    },
+    "industry_profiles": {
+      "table_name": "industry_profiles",
+      "primary_key": "company_id",
+      "fields": {
+        "company_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "user_id": { "type": "VARCHAR(36)", "foreign_key": "users.user_id", "nullable": false },
+        "company_name": { "type": "VARCHAR(255)", "nullable": false },
+        "logo_url": { "type": "VARCHAR(500)", "nullable": true },
+        "company_size": { "type": "VARCHAR(50)", "nullable": true },
+        "industry_type": { "type": "VARCHAR(100)", "nullable": false },
+        "headquarters_location": { "type": "VARCHAR(255)", "nullable": true },
+        "website": { "type": "VARCHAR(255)", "nullable": true },
+        "founded_year": { "type": "INT", "nullable": true },
+        "description": { "type": "TEXT", "nullable": true },
+        "hr_contact_name": { "type": "VARCHAR(255)", "nullable": true },
+        "hr_email": { "type": "VARCHAR(255)", "nullable": true },
+        "hr_phone": { "type": "VARCHAR(50)", "nullable": true },
+        "company_verified": { "type": "BOOLEAN", "default": false },
+        "created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }
+      },
+      "indexes": ["user_id", "industry_type", "company_name"]
+    },
+    "academician_profiles": {
+      "table_name": "academician_profiles",
+      "primary_key": "academician_id",
+      "fields": {
+        "academician_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "user_id": { "type": "VARCHAR(36)", "foreign_key": "users.user_id", "nullable": false },
+        "employee_id": { "type": "VARCHAR(50)", "nullable": false },
+        "department": { "type": "VARCHAR(100)", "nullable": false },
+        "institution_id": { "type": "VARCHAR(36)", "foreign_key": "institution_profiles.institution_id", "nullable": false },
+        "designation": { "type": "VARCHAR(100)", "nullable": true },
+        "specialization": { "type": "VARCHAR(255)", "nullable": true },
+        "bio": { "type": "TEXT", "nullable": true },
+        "research_interests": { "type": "TEXT", "nullable": true },
+        "publications_count": { "type": "INT", "default": 0 },
+        "years_experience": { "type": "INT", "default": 0 },
+        "created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }
+      },
+      "indexes": ["user_id", "institution_id", "department"]
+    },
+    "institution_profiles": {
+      "table_name": "institution_profiles",
+      "primary_key": "institution_id",
+      "fields": {
+        "institution_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "user_id": { "type": "VARCHAR(36)", "foreign_key": "users.user_id", "nullable": false },
+        "institution_name": { "type": "VARCHAR(255)", "nullable": false },
+        "logo_url": { "type": "VARCHAR(500)", "nullable": true },
+        "location": { "type": "VARCHAR(255)", "nullable": true },
+        "contact_person": { "type": "VARCHAR(255)", "nullable": true },
+        "contact_email": { "type": "VARCHAR(255)", "nullable": true },
+        "contact_phone": { "type": "VARCHAR(50)", "nullable": true },
+        "total_students": { "type": "INT", "default": 0 },
+        "departments": { "type": "JSON", "nullable": true },
+        "created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }
+      },
+      "indexes": ["user_id", "institution_name"]
+    },
+    "skills": {
+      "table_name": "skills",
+      "primary_key": "skill_id",
+      "fields": {
+        "skill_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "skill_name": { "type": "VARCHAR(100)", "nullable": false, "unique": true },
+        "category": { "type": "ENUM('technical', 'soft_skills')", "nullable": false },
+        "sub_category": { "type": "VARCHAR(100)", "nullable": true },
+        "level": { "type": "ENUM('beginner', 'intermediate', 'advanced')", "default": "intermediate" },
+        "description": { "type": "TEXT", "nullable": true },
+        "related_roles": { "type": "JSON", "nullable": true },
+        "learning_resources_link": { "type": "VARCHAR(500)", "nullable": true }
+      },
+      "indexes": ["category", "sub_category", "skill_name"]
+    },
+    "student_skills": {
+      "table_name": "student_skills",
+      "primary_key": "student_skill_id",
+      "fields": {
+        "student_skill_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "student_id": { "type": "VARCHAR(36)", "foreign_key": "student_profiles.student_id", "nullable": false },
+        "skill_id": { "type": "VARCHAR(36)", "foreign_key": "skills.skill_id", "nullable": false },
+        "proficiency_level": { "type": "INT", "default": 1 },
+        "years_experience": { "type": "DECIMAL(3,1)", "default": 0.0 },
+        "verified": { "type": "BOOLEAN", "default": false },
+        "certification_url": { "type": "VARCHAR(500)", "nullable": true },
+        "added_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "last_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" }
+      },
+      "indexes": ["student_id", "skill_id"]
+    },
+    "skill_assessments": {
+      "table_name": "skill_assessments",
+      "primary_key": "assessment_id",
+      "fields": {
+        "assessment_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "student_id": { "type": "VARCHAR(36)", "foreign_key": "student_profiles.student_id", "nullable": false },
+        "assessment_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "total_score": { "type": "INT", "nullable": false },
+        "skill_profiling_report": { "type": "TEXT", "nullable": true },
+        "skill_gaps": { "type": "JSON", "nullable": true },
+        "strengths": { "type": "JSON", "nullable": true },
+        "recommendations": { "type": "JSON", "nullable": true },
+        "completed_at": { "type": "TIMESTAMP", "nullable": true }
+      },
+      "indexes": ["student_id", "assessment_date"]
+    },
+    "internship_postings": {
+      "table_name": "internship_postings",
+      "primary_key": "internship_id",
+      "fields": {
+        "internship_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "company_id": { "type": "VARCHAR(36)", "foreign_key": "industry_profiles.company_id", "nullable": false },
+        "title": { "type": "VARCHAR(255)", "nullable": false },
+        "description": { "type": "TEXT", "nullable": false },
+        "duration_months": { "type": "INT", "nullable": false },
+        "skills_required": { "type": "JSON", "nullable": false },
+        "location": { "type": "VARCHAR(255)", "nullable": false },
+        "is_remote": { "type": "BOOLEAN", "default": false },
+        "stipend": { "type": "DECIMAL(10,2)", "nullable": true },
+        "stipend_currency": { "type": "VARCHAR(10)", "default": "INR" },
+        "start_date": { "type": "DATE", "nullable": false },
+        "end_date": { "type": "DATE", "nullable": true },
+        "application_deadline": { "type": "DATE", "nullable": false },
+        "no_of_positions": { "type": "INT", "default": 1 },
+        "posted_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "status": { "type": "ENUM('open', 'closed', 'filled')", "default": "open" }
+      },
+      "indexes": ["company_id", "status", "application_deadline"]
+    },
+    "job_postings": {
+      "table_name": "job_postings",
+      "primary_key": "job_id",
+      "fields": {
+        "job_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "company_id": { "type": "VARCHAR(36)", "foreign_key": "industry_profiles.company_id", "nullable": false },
+        "title": { "type": "VARCHAR(255)", "nullable": false },
+        "description": { "type": "TEXT", "nullable": false },
+        "experience_required_years": { "type": "INT", "default": 0 },
+        "skills_required": { "type": "JSON", "nullable": false },
+        "location": { "type": "VARCHAR(255)", "nullable": false },
+        "is_remote": { "type": "BOOLEAN", "default": false },
+        "salary_min": { "type": "DECIMAL(12,2)", "nullable": true },
+        "salary_max": { "type": "DECIMAL(12,2)", "nullable": true },
+        "job_type": { "type": "ENUM('full-time', 'contract', 'part-time')", "default": "full-time" },
+        "application_deadline": { "type": "DATE", "nullable": false },
+        "no_of_positions": { "type": "INT", "default": 1 },
+        "posted_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "status": { "type": "ENUM('open', 'closed', 'filled')", "default": "open" }
+      },
+      "indexes": ["company_id", "status", "job_type", "application_deadline"]
+    },
+    "applications": {
+      "table_name": "applications",
+      "primary_key": "application_id",
+      "fields": {
+        "application_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "student_id": { "type": "VARCHAR(36)", "foreign_key": "student_profiles.student_id", "nullable": false },
+        "opportunity_id": { "type": "VARCHAR(36)", "nullable": false },
+        "opportunity_type": { "type": "ENUM('internship', 'job')", "nullable": false },
+        "application_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "cover_letter": { "type": "TEXT", "nullable": true },
+        "resume_url": { "type": "VARCHAR(500)", "nullable": true },
+        "status": { "type": "ENUM('applied', 'under_review', 'shortlisted', 'rejected', 'accepted', 'interview_scheduled')", "default": "applied" },
+        "company_response": { "type": "TEXT", "nullable": true },
+        "interview_date": { "type": "DATETIME", "nullable": true },
+        "interview_link": { "type": "VARCHAR(500)", "nullable": true },
+        "final_status": { "type": "VARCHAR(50)", "default": "pending" },
+        "offer_letter_url": { "type": "VARCHAR(500)", "nullable": true }
+      },
+      "indexes": ["student_id", "opportunity_id", "status", "application_date"]
+    },
+    "mock_tests": {
+      "table_name": "mock_tests",
+      "primary_key": "test_id",
+      "fields": {
+        "test_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "test_name": { "type": "VARCHAR(255)", "nullable": false },
+        "test_category": { "type": "ENUM('technical', 'aptitude', 'reasoning')", "nullable": false },
+        "description": { "type": "TEXT", "nullable": true },
+        "total_questions": { "type": "INT", "nullable": false },
+        "duration_minutes": { "type": "INT", "nullable": false },
+        "difficulty_level": { "type": "ENUM('easy', 'medium', 'hard')", "default": "medium" },
+        "passing_score": { "type": "INT", "default": 70 },
+        "created_by": { "type": "VARCHAR(50)", "default": "admin" },
+        "company_id": { "type": "VARCHAR(36)", "foreign_key": "industry_profiles.company_id", "nullable": true },
+        "created_date": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "status": { "type": "ENUM('draft', 'published', 'archived')", "default": "published" }
+      },
+      "indexes": ["test_category", "difficulty_level", "status"]
+    },
+    "student_test_attempts": {
+      "table_name": "student_test_attempts",
+      "primary_key": "attempt_id",
+      "fields": {
+        "attempt_id": { "type": "VARCHAR(36)", "nullable": false, "unique": true },
+        "student_id": { "type": "VARCHAR(36)", "foreign_key": "student_profiles.student_id", "nullable": false },
+        "test_id": { "type": "VARCHAR(36)", "foreign_key": "mock_tests.test_id", "nullable": false },
+        "start_time": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+        "end_time": { "type": "TIMESTAMP", "nullable": true },
+        "total_marks": { "type": "INT", "nullable": false },
+        "obtained_marks": { "type": "INT", "nullable": false },
+        "percentage": { "type": "DECIMAL(5,2)", "nullable": false },
+        "passed": { "type": "BOOLEAN", "default": false },
+        "answers_submitted": { "type": "JSON", "nullable": true },
+        "time_taken_minutes": { "type": "INT", "nullable": true },
+        "review_available": { "type": "BOOLEAN", "default": true },
+        "is_completed": { "type": "BOOLEAN", "default": false }
+      },
+      "indexes": ["student_id", "test_id", "start_time"]
+    }
+  }
+}

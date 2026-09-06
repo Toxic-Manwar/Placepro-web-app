@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlacePro - Academia-Industry Collaboration Portal</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Ambient Light Atmosphere -->
+  <div class="ambient-glow">
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="glow-orb-3"></div>
+  </div>
+
+  <!-- ===================================================================
+       TOP NAVIGATION BAR
+       =================================================================== -->
+  <header class="top-header">
+    <div class="brand-section" onclick="switchPortal('public')">
+      <div class="brand-logo-icon">🤝</div>
+      <div>
+        <div class="brand-title">PlacePro</div>
+        <div class="brand-badge">Academia-Industry Portal</div>
+      </div>
+    </div>
+
+    <!-- Multi-Role Portal Switcher Bar -->
+    <nav class="portal-switcher">
+      <button class="portal-btn active" data-role="public" onclick="switchPortal('public')">🌐 Public Home</button>
+      <button class="portal-btn" data-role="student" onclick="switchPortal('student')">🎓 Student</button>
+      <button class="portal-btn" data-role="industry" onclick="switchPortal('industry')">🏢 Industry</button>
+      <button class="portal-btn" data-role="academician" onclick="switchPortal('academician')">🔬 Faculty</button>
+      <button class="portal-btn" data-role="institution" onclick="switchPortal('institution')">🏛️ University</button>
+      <button class="portal-btn" data-role="admin" onclick="switchPortal('admin')">⚙️ Admin</button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <div class="header-search">
+        <span class="header-search-icon">🔍</span>
+        <input type="text" id="globalSearchInput" placeholder="Search jobs, skills, tests...">
+      </div>
+
+      <button class="icon-btn" title="Notifications" onclick="openModal('notificationsModal')">
+        🔔
+        <span class="badge-dot"></span>
+      </button>
+
+      <button class="icon-btn" title="Messages" onclick="openModal('messagesModal')">
+        💬
+      </button>
+
+      <div class="user-chip" onclick="openModal('profileModal')">
+        <div class="user-avatar">JD</div>
+        <div class="user-name-role">
+          <span class="user-name">John Developer</span>
+          <span class="user-role-tag">Student (Active)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       PORTAL MAIN CONTAINER
+       =================================================================== -->
+  <div class="portal-container">
+    
+    <!-- Dynamic Sidebar (Visible in Portals) -->
+    <aside class="portal-sidebar" id="portalSidebar" style="display: none;">
+      <div>
+        <div class="nav-section-title">Navigation Menu</div>
+        <ul class="sidebar-nav-list" id="sidebarNavList">
+          <!-- Dynamically Populated by app.js -->
+        </ul>
+      </div>
+
+      <div style="padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+        <div class="card" style="padding: 14px; background: rgba(99, 102, 241, 0.08); border-color: rgba(99,102,241,0.25);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #a5b4fc; margin-bottom: 4px;">🚀 Need Help?</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">Contact support or view our interactive onboarding guide.</div>
+          <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="openModal('helpModal')">Support Desk</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dynamic Content Workspace -->
+    <main class="portal-content">
+
+      <!-- =============================================================
+           1. PUBLIC LANDING PAGE VIEW
+           ============================================================= -->
+      <section class="view-section active" id="public-home">
+        <div class="landing-hero">
+          <div class="hero-badge">✨ Next-Generation Talent & Collaboration Ecosystem</div>
+          <h1 class="hero-title">Bridging <span class="gradient-text">Academia & Industry</span> for Future Leaders</h1>
+          <p class="hero-desc">
+            Empowering students with verified skill profiling, real-time mock assessments, high-impact internships, and corporate placements—while enabling industry and faculty to collaborate on cutting-edge research.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" onclick="openModal('registerModal')">🚀 Get Started Free</button>
+            <button class="btn btn-outline btn-lg" onclick="switchPortal('student')">🎓 Explore Student Portal</button>
+          </div>
+
+          <!-- Key Statistics Bar -->
+          <div class="grid-4" style="margin-top: 40px;">
+            <div class="stat-card">
+              <div class="stat-info">
+                <div class="stat-label">Active Students</div>
+                <div class="stat-value">10,000+</div>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-indigo">🎓</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-info">
+                <div class="stat-label">Partner Companies</div>
+                <div class="stat-value">500+</div>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-cyan">🏢</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-info">
+                <div class="stat-label">Opportunities Live</div>
+                <div class="stat-value">5,000+</div>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-emerald">💼</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-info">
+                <div class="stat-label">Placement Success</div>
+                <div class="stat-value">95%</div>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-amber">🏆</div>
+            </div>
+          </div>
+
+          <!-- Dedicated Portal Cards -->
+          <div class="portal-cards-row">
+            <div class="portal-select-card" onclick="switchPortal('student')">
+              <div class="portal-icon">🎓</div>
+              <h3>Student Portal</h3>
+              <p>Skill assessment, AI job matching, timed mock tests, and verified digital portfolio.</p>
+              <div style="margin-top: 14px; font-weight: 700; color: var(--secondary); font-size: 0.85rem;">Enter Portal →</div>
+            </div>
+
+            <div class="portal-select-card" onclick="switchPortal('industry')">
+              <div class="portal-icon">🏢</div>
+              <h3>Industry Portal</h3>
+              <p>Post internships & jobs, screen candidates via skill match scores, and manage hiring ATS.</p>
+              <div style="margin-top: 14px; font-weight: 700; color: var(--secondary); font-size: 0.85rem;">Enter Portal →</div>
+            </div>
+
+            <div class="portal-select-card" onclick="switchPortal('academician')">
+              <div class="portal-icon">🔬</div>
+              <h3>Faculty Portal</h3>
+              <p>Apply for FDP programs, participate in industry consultancy, and mentor students.</p>
+              <div style="margin-top: 14px; font-weight: 700; color: var(--secondary); font-size: 0.85rem;">Enter Portal →</div>
+            </div>
+
+            <div class="portal-select-card" onclick="switchPortal('institution')">
+              <div class="portal-icon">🏛️</div>
+              <h3>University Portal</h3>
+              <p>Institutional placement analytics, batch skill gap diagnostics, and corporate MOUs.</p>
+              <div style="margin-top: 14px; font-weight: 700; color: var(--secondary); font-size: 0.85rem;">Enter Portal →</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           2. STUDENT PORTAL VIEWS
+           ============================================================= -->
+      
+      <!-- Student Dashboard -->
+      <section class="view-section" id="student-dashboard">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Student Dashboard</h2>
+          <p style="color: var(--text-secondary);">Welcome back, John! Here is your current readiness and opportunity tracker.</p>
+        </div>
+
+        <!-- Row 1: Profile Status Card -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 1.05rem;">Profile Completion Status: 78%</div>
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">Completed: Personal info, Skills assessment. Pending: Docker certification verification.</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="showTab('student-portfolio')">Edit Portfolio</button>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 78%;"></div>
+          </div>
+        </div>
+
+        <!-- Row 2: 4 Quick Stat Cards -->
+        <div class="grid-4" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Applications</div>
+              <div class="stat-value" id="appCountBadge">4</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-indigo">📋</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Shortlisted</div>
+              <div class="stat-value">2</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-cyan">⭐</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Interviews</div>
+              <div class="stat-value">1</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-emerald">📅</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Skill Score</div>
+              <div class="stat-value">78/100</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-amber">🎯</div>
+          </div>
+        </div>
+
+        <!-- Row 3: Skill Radar & Recommendations Grid -->
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">🎯 Skill Profiling Radar</div>
+                <div class="card-subtitle">Verified multi-dimensional competency analysis</div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="showTab('student-assessment')">Retake Test</button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <canvas id="skillRadarCanvas" width="380" height="300"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">⚡ High-Match Opportunities</div>
+                <div class="card-subtitle">Roles calibrated against your skill profile</div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="showTab('student-internships')">View All</button>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <div>
+                    <div style="font-weight: 700;">Full-Stack Developer Intern</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Tech Innovations India • Bangalore (Remote)</div>
+                    <div style="margin-top: 8px; display: flex; gap: 6px;">
+                      <span class="tag tag-match">92% Match</span>
+                      <span class="tag tag-tech">Python</span>
+                      <span class="tag tag-tech">React</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary btn-sm" onclick="applyForOpportunity('INT001')">Apply Now</button>
+                </div>
+              </div>
+
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <div>
+                    <div style="font-weight: 700;">AI & Data Science Intern</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Cognitive Nexus Labs • Hyderabad (Hybrid)</div>
+                    <div style="margin-top: 8px; display: flex; gap: 6px;">
+                      <span class="tag tag-match">88% Match</span>
+                      <span class="tag tag-tech">Python</span>
+                      <span class="tag tag-tech">SQL</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary btn-sm" onclick="applyForOpportunity('INT002')">Apply Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Skill Assessment Section -->
+      <section class="view-section" id="student-assessment">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Comprehensive Skill Assessment</h2>
+          <p style="color: var(--text-secondary);">Evaluate your Technical, Soft Skills, and Aptitude competencies for automated profiling.</p>
+        </div>
+
+        <!-- Intro Card -->
+        <div class="assessment-box" id="assessmentIntro">
+          <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🎯</div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 12px;">Standardized Skill Readiness Test</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">
+              This 4-question interactive diagnostic simulates full-scale technical and problem-solving evaluations. Your score dynamically updates your radar chart and job compatibility matching score.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 30px;">
+              <div class="tag">⏱️ 10 Minutes</div>
+              <div class="tag">❓ 4 Questions</div>
+              <div class="tag">📊 Real-Time Profiling</div>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="startAssessment()">Start Assessment Now</button>
+          </div>
+        </div>
+
+        <!-- In-Progress Quiz Card -->
+        <div class="assessment-box" id="assessmentQuiz" style="display: none;">
+          <div class="quiz-header">
+            <div>
+              <div style="font-size: 0.85rem; color: var(--text-secondary);" id="quizQNum">Question 1 of 4</div>
+              <div class="progress-container" style="width: 250px;">
+                <div class="progress-bar" id="quizProgress" style="width: 25%;"></div>
+              </div>
+            </div>
+            <div class="timer-chip" id="quizTimerDisplay">⏱️ 10:00</div>
+          </div>
+
+          <div class="question-text" id="quizQText">Question text here</div>
+          <div class="options-grid" id="quizOptionsList">
+            <!-- Options dynamically rendered by app.js -->
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <button class="btn btn-outline" onclick="prevQuizQuestion()">Previous</button>
+            <button class="btn btn-primary" onclick="nextQuizQuestion()">Next / Submit</button>
+          </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="assessment-box" id="assessmentResults" style="display: none;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 48px; margin-bottom: 10px;">🎉</div>
+            <h3 style="font-size: 1.6rem;">Assessment Complete!</h3>
+            <div style="font-size: 2.2rem; font-weight: 800; color: var(--secondary); margin: 8px 0;" id="resultScoreDisplay">84/100</div>
+            <p style="color: var(--text-secondary);">Your skill profile and radar visualization have been updated successfully.</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🔍 Identified Skill Gaps</div>
+              <ul style="margin: 14px 0 0 20px; color: var(--text-secondary); line-height: 1.8;">
+                <li>Cloud Infrastructure (AWS Solutions Architecture)</li>
+                <li>Containerization & Orchestration (Docker & K8s)</li>
+                <li>Advanced System Scalability & Microservices</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-title">🚀 Recommended Learning Roadmap</div>
+              <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div class="tag tag-tech">AWS Cloud Foundations (4 Weeks)</div>
+                <div class="tag tag-tech">Microservices with Docker (3 Weeks)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Internships Listing -->
+      <section class="view-section" id="student-internships">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 1.8rem;">Internship Opportunities</h2>
+            <p style="color: var(--text-secondary);">Explore curated internships with top enterprise tech firms.</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <!-- Internship Card 1 -->
+          <div class="card opportunity-card">
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 14px;">
+              <div class="stat-icon-wrapper stat-icon-cyan" style="font-size: 24px;">⚡</div>
+              <div>
+                <div style="font-weight: 700; font-size: 1.1rem;">Full-Stack Developer Intern</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Tech Innovations India</div>
+              </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Build next-gen web apps using React, Python, and cloud databases. Direct mentorship from Principal Engineers.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+              <span class="tag tag-match">92% Match</span>
+              <span class="tag">⏱️ 3 Months</span>
+              <span class="tag">💰 ₹25,000/mo</span>
+              <span class="tag">📍 Remote</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyForOpportunity('INT001')">1-Click Apply</button>
+          </div>
+
+          <!-- Internship Card 2 -->
+          <div class="card opportunity-card">
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 14px;">
+              <div class="stat-icon-wrapper stat-icon-indigo" style="font-size: 24px;">🧠</div>
+              <div>
+                <div style="font-weight: 700; font-size: 1.1rem;">AI & Data Science Intern</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Cognitive Nexus Labs</div>
+              </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Train and fine-tune models, optimize SQL feature stores, and implement production GenAI pipelines.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+              <span class="tag tag-match">88% Match</span>
+              <span class="tag">⏱️ 6 Months</span>
+              <span class="tag">💰 ₹35,000/mo</span>
+              <span class="tag">📍 Hybrid</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyForOpportunity('INT002')">1-Click Apply</button>
+          </div>
+
+          <!-- Internship Card 3 -->
+          <div class="card opportunity-card">
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 14px;">
+              <div class="stat-icon-wrapper stat-icon-emerald" style="font-size: 24px;">🛡️</div>
+              <div>
+                <div style="font-weight: 700; font-size: 1.1rem;">Cybersecurity Intern</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">SecureShield Technologies</div>
+              </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Vulnerability assessment, automated penetration testing, and security auditing for enterprise systems.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+              <span class="tag tag-match">81% Match</span>
+              <span class="tag">⏱️ 4 Months</span>
+              <span class="tag">💰 ₹28,000/mo</span>
+              <span class="tag">📍 Bangalore</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyForOpportunity('INT003')">1-Click Apply</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Jobs Listing -->
+      <section class="view-section" id="student-jobs">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Full-Time Placements & Jobs</h2>
+          <p style="color: var(--text-secondary);">Direct campus and industry openings for final-year students and graduates.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card opportunity-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+              <div>
+                <div style="font-weight: 700; font-size: 1.2rem;">Associate Cloud Engineer</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">CloudMatrix Technologies • Bangalore</div>
+              </div>
+              <span class="tag tag-match">82% Match</span>
+            </div>
+            <div style="display: flex; gap: 10px; margin: 12px 0;">
+              <span class="tag">💼 Full-Time</span>
+              <span class="tag">💵 ₹8.5 - 12 LPA</span>
+              <span class="tag">📅 Ends Dec 31</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 18px;">
+              Deploy and maintain containerized microservices on AWS/Kubernetes. High growth potential.
+            </p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyForOpportunity('JOB001')">Apply for Position</button>
+          </div>
+
+          <div class="card opportunity-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+              <div>
+                <div style="font-weight: 700; font-size: 1.2rem;">Frontend React Developer</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">Fintech Spark Inc. • Mumbai</div>
+              </div>
+              <span class="tag tag-match">85% Match</span>
+            </div>
+            <div style="display: flex; gap: 10px; margin: 12px 0;">
+              <span class="tag">💼 Full-Time</span>
+              <span class="tag">💵 ₹10 - 15 LPA</span>
+              <span class="tag">📅 Ends Oct 30</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 18px;">
+              Create responsive trading & banking user experiences with React 19, TypeScript, and state management.
+            </p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="applyForOpportunity('JOB002')">Apply for Position</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Mock Tests -->
+      <section class="view-section" id="student-mock-tests">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Placement Mock Test Platform</h2>
+          <p style="color: var(--text-secondary);">Practice with timed assessments simulating technical and aptitude hiring rounds.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">Full Stack & DSA Challenge</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">Technical • 45 Mins • 20 Questions</div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 16px;">
+              <span>Best Score: <strong style="color: var(--secondary);">84%</strong></span>
+              <span>Attempts: <strong>2</strong></span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="showTab('student-assessment')">Start Mock Test</button>
+          </div>
+
+          <div class="card">
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">Quantitative & Logical Aptitude</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">Aptitude • 30 Mins • 25 Questions</div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 16px;">
+              <span>Best Score: <strong style="color: var(--secondary);">80%</strong></span>
+              <span>Attempts: <strong>1</strong></span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="showTab('student-assessment')">Start Mock Test</button>
+          </div>
+
+          <div class="card">
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">Core Python & Database Design</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">Technical • 40 Mins • 20 Questions</div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 16px;">
+              <span>Best Score: <strong style="color: var(--text-muted);">Unattempted</strong></span>
+              <span>Attempts: <strong>0</strong></span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="showTab('student-assessment')">Start Mock Test</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Digital Portfolio -->
+      <section class="view-section" id="student-portfolio">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 1.8rem;">Digital Portfolio & Showcase</h2>
+            <p style="color: var(--text-secondary);">Verified profile showcasing your skills, projects, and certifications to recruiters.</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline" onclick="window.print()">🖨️ Export PDF</button>
+            <button class="btn btn-secondary" onclick="openModal('sharePortfolioModal')">🔗 Share Public URL</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="user-avatar" style="width: 72px; height: 72px; font-size: 28px;">JD</div>
+            <div>
+              <div style="font-size: 1.4rem; font-weight: 800;">John Developer</div>
+              <div style="color: var(--text-secondary); font-size: 0.95rem;">B.Tech Computer Science (Sem 6) • CGPA: 8.5/10</div>
+              <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <span class="tag tag-match">✓ Verified Student</span>
+                <span class="tag tag-tech">Takshashila University</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Verified Projects -->
+          <div class="card">
+            <div class="card-title">💼 Featured Projects</div>
+            <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 14px;">
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02);">
+                <div style="font-weight: 700;">E-Commerce Full-Stack Microservices</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 8px;">
+                  Built with Python, Django, React, PostgreSQL, and Stripe integration.
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <span class="tag tag-tech">Python</span>
+                  <span class="tag tag-tech">React</span>
+                  <span class="tag tag-tech">PostgreSQL</span>
+                </div>
+              </div>
+
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02);">
+                <div style="font-weight: 700;">Real-Time Collaborative Code Editor</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 8px;">
+                  WebSocket synchronized multiplayer editor with syntax highlighting.
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <span class="tag tag-tech">JavaScript</span>
+                  <span class="tag tag-tech">WebSockets</span>
+                  <span class="tag tag-tech">Node.js</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verified Certifications -->
+          <div class="card">
+            <div class="card-title">📜 Verified Certifications</div>
+            <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 14px;">
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-weight: 700;">AWS Certified Solutions Architect</div>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary);">Issued by Amazon Web Services • May 2024</div>
+                </div>
+                <span class="tag tag-match">✓ Verified</span>
+              </div>
+
+              <div class="card" style="padding: 14px; background: rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-weight: 700;">React & Redux State Mastery</div>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary);">Issued by Meta • Nov 2024</div>
+                </div>
+                <span class="tag tag-match">✓ Verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Applications Kanban -->
+      <section class="view-section" id="student-applications">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Application Lifecycle Tracker</h2>
+          <p style="color: var(--text-secondary);">Real-time status tracking across all submitted applications.</p>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Applied -->
+          <div class="kanban-column">
+            <div class="kanban-col-header">
+              <span>Applied</span>
+              <span class="tag">1</span>
+            </div>
+            <div class="kanban-card">
+              <div style="font-weight: 700;">AI & Data Science Intern</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Cognitive Nexus Labs</div>
+              <div style="margin-top: 8px; font-size: 0.75rem; color: #a5b4fc;">Applied: Today</div>
+            </div>
+          </div>
+
+          <!-- Under Review -->
+          <div class="kanban-column">
+            <div class="kanban-col-header">
+              <span>Under Review</span>
+              <span class="tag">1</span>
+            </div>
+            <div class="kanban-card">
+              <div style="font-weight: 700;">Full-Stack Developer Intern</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Tech Innovations India</div>
+              <div style="margin-top: 8px; font-size: 0.75rem; color: #a5b4fc;">Applied: Sep 01, 2026</div>
+            </div>
+          </div>
+
+          <!-- Shortlisted -->
+          <div class="kanban-column">
+            <div class="kanban-col-header">
+              <span>Shortlisted</span>
+              <span class="tag">1</span>
+            </div>
+            <div class="kanban-card">
+              <div style="font-weight: 700;">Frontend React Developer</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Fintech Spark Inc.</div>
+              <div style="margin-top: 8px; font-size: 0.75rem; color: #34d399;">Profile Shortlisted</div>
+            </div>
+          </div>
+
+          <!-- Interview Scheduled -->
+          <div class="kanban-column">
+            <div class="kanban-col-header">
+              <span>Interview</span>
+              <span class="tag">1</span>
+            </div>
+            <div class="kanban-card">
+              <div style="font-weight: 700;">Backend Python Engineer</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">TCS Innovation Hub</div>
+              <div style="margin-top: 8px; font-size: 0.75rem; color: #fbbf24;">📅 Oct 10, 2:00 PM</div>
+            </div>
+          </div>
+
+          <!-- Offers -->
+          <div class="kanban-column">
+            <div class="kanban-col-header">
+              <span>Offers</span>
+              <span class="tag">1</span>
+            </div>
+            <div class="kanban-card">
+              <div style="font-weight: 700;">Software Engineer Graduate</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Infosys Wings</div>
+              <div style="margin-top: 8px; font-size: 0.75rem; color: #38bdf8;">🎉 Offer Letter Received</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Learning Resources -->
+      <section class="view-section" id="student-learning">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Personalized Learning & Skill Bridging</h2>
+          <p style="color: var(--text-secondary);">Targeted programs recommended to close identified skill gaps.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="tag tag-tech" style="margin-bottom: 12px;">Cloud Architecture</div>
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">AWS Solutions Architect Immersion</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Master VPCs, IAM, EC2, ECS, and Serverless event architecture.</p>
+            <button class="btn btn-secondary" style="width: 100%;">Enroll Free Course</button>
+          </div>
+
+          <div class="card">
+            <div class="tag tag-tech" style="margin-bottom: 12px;">DevOps</div>
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">Docker & Kubernetes in Production</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Containerize microservices, write Helm charts, and configure CI/CD.</p>
+            <button class="btn btn-secondary" style="width: 100%;">Enroll Free Course</button>
+          </div>
+
+          <div class="card">
+            <div class="tag tag-tech" style="margin-bottom: 12px;">System Design</div>
+            <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 6px;">High-Throughput Distributed Systems</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Caching strategies, rate limiters, Kafka queues, and CAP theorem trade-offs.</p>
+            <button class="btn btn-secondary" style="width: 100%;">Enroll Free Course</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           3. INDUSTRY / COMPANY PORTAL VIEWS
+           ============================================================= -->
+      <section class="view-section" id="industry-dashboard">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Company Recruitment & ATS Command</h2>
+          <p style="color: var(--text-secondary);">Manage postings, review candidate skill compatibility, and schedule interviews.</p>
+        </div>
+
+        <div class="grid-4" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Active Postings</div>
+              <div class="stat-value">6</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-indigo">📑</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Applications</div>
+              <div class="stat-value">245</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-cyan">👥</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Shortlisted</div>
+              <div class="stat-value">28</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-emerald">⭐</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Interviews Set</div>
+              <div class="stat-value">8</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-amber">📅</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">👥 Top Matched Applicants</div>
+            <button class="btn btn-primary btn-sm" onclick="showTab('industry-post-opportunity')">+ Post New Opportunity</button>
+          </div>
+          
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">
+                <th style="padding: 12px;">Candidate</th>
+                <th style="padding: 12px;">Role Applied</th>
+                <th style="padding: 12px;">Match Score</th>
+                <th style="padding: 12px;">Status</th>
+                <th style="padding: 12px;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 12px; font-weight: 600;">John Developer (Takshashila Univ)</td>
+                <td style="padding: 12px;">Full-Stack Developer Intern</td>
+                <td style="padding: 12px;"><span class="tag tag-match">92% Match</span></td>
+                <td style="padding: 12px;"><span class="tag">Under Review</span></td>
+                <td style="padding: 12px;">
+                  <button class="btn btn-secondary btn-sm" onclick="openModal('applicantModal')">Review Profile</button>
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 12px; font-weight: 600;">Priya Sharma (IIT Madras)</td>
+                <td style="padding: 12px;">Associate Cloud Engineer</td>
+                <td style="padding: 12px;"><span class="tag tag-match">95% Match</span></td>
+                <td style="padding: 12px;"><span class="tag tag-match">Shortlisted</span></td>
+                <td style="padding: 12px;">
+                  <button class="btn btn-secondary btn-sm" onclick="openModal('applicantModal')">Schedule Interview</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Industry Post Opportunity -->
+      <section class="view-section" id="industry-post-opportunity">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Publish Opportunity</h2>
+          <p style="color: var(--text-secondary);">Post an internship, full-time job opening, or industry-sponsored learning program.</p>
+        </div>
+
+        <div class="card" style="max-width: 800px;">
+          <form onsubmit="event.preventDefault(); alert('🚀 Opportunity successfully published to the candidate network!'); showTab('industry-dashboard');">
+            <div class="form-group">
+              <label class="form-label">Position Title *</label>
+              <input type="text" class="form-control" placeholder="e.g. Junior Backend Engineer" required>
+            </div>
+            
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Opportunity Type</label>
+                <select class="form-control">
+                  <option>Internship (3-6 Months)</option>
+                  <option>Full-Time Placement</option>
+                  <option>Sponsored Learning Program</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Compensation / Stipend *</label>
+                <input type="text" class="form-control" placeholder="e.g. ₹30,000/mo or ₹10-14 LPA" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Required Skills (Minimum 3)</label>
+              <input type="text" class="form-control" placeholder="e.g. Python, SQL, Docker, React" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Role Description & Responsibilities</label>
+              <textarea class="form-control" rows="4" placeholder="Describe the day-to-day responsibilities and learning objectives..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">Publish Opportunity</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           4. ACADEMICIAN / FACULTY PORTAL VIEWS
+           ============================================================= -->
+      <section class="view-section" id="academician-dashboard">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">Academician & Faculty Portal</h2>
+          <p style="color: var(--text-secondary);">Faculty development programs, industrial consultancy, and research collaboration.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">📚 FDP Programs</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 10px 0 16px;">
+              Apply for industry immersion programs with NVIDIA, Google Cloud, and Microsoft Research.
+            </p>
+            <button class="btn btn-secondary btn-sm">Explore FDP Bids</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">💡 Industrial Consultancy</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 10px 0 16px;">
+              Provide expert consultancy on industrial R&D projects with verified compensation.
+            </p>
+            <button class="btn btn-secondary btn-sm">View Open Projects</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🤝 Student Mentorship</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 10px 0 16px;">
+              Guide and evaluate assigned student interns working across enterprise live projects.
+            </p>
+            <button class="btn btn-secondary btn-sm">Manage Mentorships</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           5. INSTITUTION / UNIVERSITY PORTAL VIEWS
+           ============================================================= -->
+      <section class="view-section" id="institution-dashboard">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">University Placement & Analytics Center</h2>
+          <p style="color: var(--text-secondary);">Takshashila University • 2,000+ Registered Students • 95% Overall Placement Rate</p>
+        </div>
+
+        <div class="grid-4" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Total Students</div>
+              <div class="stat-value">2,000</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-indigo">🎓</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Placement Rate</div>
+              <div class="stat-value">95%</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-cyan">📈</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Average CTC</div>
+              <div class="stat-value">₹8.5 LPA</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-emerald">💵</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-label">Top Hiring Partner</div>
+              <div class="stat-value">TCS (45)</div>
+            </div>
+            <div class="stat-icon-wrapper stat-icon-amber">🏢</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📊 Placement Rate by Department (%)</div>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <canvas id="placementBarCanvas" width="480" height="260"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           6. ADMIN CONTROL PANEL VIEWS
+           ============================================================= -->
+      <section class="view-section" id="admin-dashboard">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.8rem;">System Administration & KYC Hub</h2>
+          <p style="color: var(--text-secondary);">Platform-wide security oversight, user verification, and skills taxonomy manager.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">🛡️ Pending KYC Verifications</div>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--secondary); margin: 8px 0;">14 Companies</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Verify corporate registration documents and HR credentials.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🏷️ Skills Taxonomy Engine</div>
+            <div style="font-size: 2rem; font-weight: 800; color: #a5b4fc; margin: 8px 0;">150+ Skills</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Manage technical, soft skill hierarchies, and industry mappings.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🔒 System Health & Audit</div>
+            <div style="font-size: 2rem; font-weight: 800; color: #34d399; margin: 8px 0;">99.98% Uptime</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Zero security anomalies detected in the past 30 days.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================
+       INTERACTIVE MODALS
+       =================================================================== -->
+  
+  <!-- Registration Modal -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="card-title">🚀 Create Your Portal Account</div>
+        <button class="close-modal-btn" onclick="closeModal('registerModal')">&times;</button>
+      </div>
+
+      <form onsubmit="event.preventDefault(); alert('🎉 Account created! Verification email sent.'); closeModal('registerModal');">
+        <div class="form-group">
+          <label class="form-label">I am joining as a:</label>
+          <select class="form-control">
+            <option>🎓 Student (Looking for Internships / Placements)</option>
+            <option>🏢 Company / Recruiter (Hiring Talent)</option>
+            <option>🔬 Academician / Faculty (Research & Mentorship)</option>
+            <option>🏛️ Educational Institution / University</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" placeholder="john@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Min 8 chars, uppercase & special" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">Complete Registration</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Candidate Review Modal (For Industry ATS) -->
+  <div class="modal-overlay" id="applicantModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="card-title">👤 Candidate Profile Review</div>
+        <button class="close-modal-btn" onclick="closeModal('applicantModal')">&times;</button>
+      </div>
+
+      <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px;">
+        <div class="user-avatar" style="width: 54px; height: 54px; font-size: 22px;">JD</div>
+        <div>
+          <div style="font-weight: 700; font-size: 1.15rem;">John Developer</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Takshashila University • B.Tech CSE (CGPA: 8.5)</div>
+          <span class="tag tag-match" style="margin-top: 6px;">92% Skill Compatibility</span>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.02);">
+        <div style="font-weight: 700; margin-bottom: 6px;">Verified Technical Proficiencies</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <span class="tag tag-tech">Python (Level 4/5)</span>
+          <span class="tag tag-tech">JavaScript (Level 4/5)</span>
+          <span class="tag tag-tech">React (Level 3/5)</span>
+          <span class="tag tag-tech">SQL (Level 4/5)</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-secondary" style="flex: 1;" onclick="alert('Interview Scheduled for John Developer!'); closeModal('applicantModal');">📅 Schedule Video Interview</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="alert('Offer Letter Dispatched!'); closeModal('applicantModal');">🎉 Send Offer Letter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Portfolio Modal -->
+  <div class="modal-overlay" id="sharePortfolioModal">
+    <div class="modal-container" style="max-width: 480px; text-align: center;">
+      <div class="modal-header">
+        <div class="card-title">🔗 Share Your Verified Portfolio</div>
+        <button class="close-modal-btn" onclick="closeModal('sharePortfolioModal')">&times;</button>
+      </div>
+
+      <div style="font-size: 80px; margin: 10px 0;">📱</div>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">
+        Anyone with this link or QR code can view your verified skills, projects, and assessment scores.
+      </p>
+
+      <div style="background: #1e293b; padding: 12px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; color: var(--secondary); margin-bottom: 20px;">
+        https://collabnexus.edu/portfolio/john-developer-cse
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%;" onclick="navigator.clipboard.writeText('https://collabnexus.edu/portfolio/john-developer-cse'); alert('Copied to clipboard!');">📋 Copy Public Link</button>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div class="modal-overlay" id="notificationsModal">
+    <div class="modal-container" style="max-width: 500px;">
+      <div class="modal-header">
+        <div class="card-title">🔔 Notifications</div>
+        <button class="close-modal-btn" onclick="closeModal('notificationsModal')">&times;</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="card" style="padding: 12px; background: rgba(99,102,241,0.06);">
+          <div style="font-weight: 700;">🎉 Application Shortlisted</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Fintech Spark Inc. has shortlisted your profile for the Frontend React Developer role.</div>
+        </div>
+        <div class="card" style="padding: 12px; background: rgba(6,182,212,0.06);">
+          <div style="font-weight: 700;">📅 Interview Invitation</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">TCS Innovation Hub scheduled your technical interview for Oct 10, 2:00 PM.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages Modal -->
+  <div class="modal-overlay" id="messagesModal">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="card-title">💬 Messages</div>
+        <button class="close-modal-btn" onclick="closeModal('messagesModal')">&times;</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="card" style="padding: 12px;">
+          <div style="display: flex; justify-content: space-between;">
+            <strong style="color: var(--secondary);">Priya Sharma (Tech Innovations HR)</strong>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">10m ago</span>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+            "Hi John, we loved your assessment score and GitHub projects. Are you available for a brief chat?"
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Support Modal -->
+  <div class="modal-overlay" id="helpModal">
+    <div class="modal-container" style="max-width: 500px;">
+      <div class="modal-header">
+        <div class="card-title">🚀 Platform Help & Support Desk</div>
+        <button class="close-modal-btn" onclick="closeModal('helpModal')">&times;</button>
+      </div>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">
+        Have a question or need assistance with skill assessments, placement verification, or company postings?
+      </p>
+      <div class="form-group">
+        <label class="form-label">Describe your query</label>
+        <textarea class="form-control" rows="3" placeholder="How can we help you?"></textarea>
+      </div>
+      <button class="btn btn-primary" style="width: 100%;" onclick="alert('Ticket submitted! Our team will respond within 2 hours.'); closeModal('helpModal');">Submit Ticket</button>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-container" style="max-width: 460px; text-align: center;">
+      <div class="modal-header">
+        <div class="card-title">👤 Active Profile</div>
+        <button class="close-modal-btn" onclick="closeModal('profileModal')">&times;</button>
+      </div>
+      <div class="user-avatar" style="width: 64px; height: 64px; font-size: 24px; margin: 0 auto 12px;">JD</div>
+      <h3 style="margin-bottom: 4px;">John Developer</h3>
+      <div style="color: var(--secondary); font-size: 0.85rem; margin-bottom: 16px;">Student Member • Takshashila University</div>
+      <div class="tag tag-match" style="margin-bottom: 20px;">✓ Email Verified & KYC Approved</div>
+      <button class="btn btn-outline" style="width: 100%; margin-bottom: 10px;" onclick="closeModal('profileModal'); showTab('student-portfolio');">View Complete Portfolio</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('profileModal'); switchPortal('public');">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>

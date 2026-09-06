@@ -1,0 +1,10 @@
+{
+  "name": "placepro-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix placepro",
+    "build": "npm run build --prefix placepro",
+    "lint": "npm run lint --prefix placepro",
+    "preview": "npm run preview --prefix placepro"
+  }
+}

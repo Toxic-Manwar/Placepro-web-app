@@ -1,0 +1,394 @@
+{
+  "sample_data": {
+    "skills_database": {
+      "technical_skills": [
+        {
+          "skill_id": "TECH001",
+          "skill_name": "Python",
+          "category": "technical",
+          "sub_category": "programming",
+          "description": "Python is a high-level, interpreted programming language known for its simplicity and readability.",
+          "level": "intermediate",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "TECH002",
+          "skill_name": "JavaScript",
+          "category": "technical",
+          "sub_category": "programming",
+          "description": "JavaScript is a versatile language for web development, both frontend and backend.",
+          "level": "intermediate",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "TECH003",
+          "skill_name": "React",
+          "category": "technical",
+          "sub_category": "web_frameworks",
+          "description": "React is a JavaScript library for building user interfaces with reusable components.",
+          "level": "advanced",
+          "industry_demand": "High"
+        },
+        {
+          "skill_id": "TECH004",
+          "skill_name": "SQL",
+          "category": "technical",
+          "sub_category": "databases",
+          "description": "SQL is the standard language for managing and manipulating relational databases.",
+          "level": "intermediate",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "TECH005",
+          "skill_name": "Docker",
+          "category": "technical",
+          "sub_category": "devops",
+          "description": "Docker is a containerization platform for packaging and deploying applications.",
+          "level": "advanced",
+          "industry_demand": "High"
+        }
+      ],
+      "soft_skills": [
+        {
+          "skill_id": "SOFT001",
+          "skill_name": "Communication",
+          "category": "soft_skills",
+          "sub_category": "interpersonal",
+          "description": "Ability to effectively convey ideas and information to others.",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "SOFT002",
+          "skill_name": "Teamwork",
+          "category": "soft_skills",
+          "sub_category": "interpersonal",
+          "description": "Ability to work effectively with others to achieve common goals.",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "SOFT003",
+          "skill_name": "Problem-Solving",
+          "category": "soft_skills",
+          "sub_category": "cognitive",
+          "description": "Ability to analyze complex problems and develop effective solutions.",
+          "industry_demand": "Very High"
+        },
+        {
+          "skill_id": "SOFT004",
+          "skill_name": "Leadership",
+          "category": "soft_skills",
+          "sub_category": "management",
+          "description": "Ability to guide and motivate others towards achieving objectives.",
+          "industry_demand": "High"
+        }
+      ]
+    },
+    "sample_student": {
+      "student_id": "STU001",
+      "user_id": "USR001",
+      "email": "john.developer@email.com",
+      "full_name": "John Developer",
+      "registration_number": "CSE/2022/001",
+      "department": "Computer Science",
+      "semester": 6,
+      "institution_id": "INST001",
+      "cgpa": 8.5,
+      "backlogs": 0,
+      "skills": [
+        {
+          "skill_id": "TECH001",
+          "proficiency_level": 4,
+          "years_experience": 2
+        },
+        {
+          "skill_id": "TECH002",
+          "proficiency_level": 4,
+          "years_experience": 2.5
+        },
+        {
+          "skill_id": "TECH003",
+          "proficiency_level": 3,
+          "years_experience": 1.5
+        },
+        {
+          "skill_id": "SOFT001",
+          "proficiency_level": 4,
+          "years_experience": 1
+        }
+      ],
+      "assessment_score": 78,
+      "portfolio": {
+        "portfolio_id": "PORT001",
+        "bio": "Full-stack developer passionate about building scalable web applications. 2+ years of experience with Python and JavaScript.",
+        "projects": [
+          {
+            "project_id": "PROJ001",
+            "project_name": "E-Commerce Platform",
+            "description": "A full-stack e-commerce platform built with Django and React",
+            "technologies_used": ["Python", "Django", "React", "PostgreSQL"],
+            "project_link": "https://project-demo.com",
+            "github_link": "https://github.com/user/project"
+          }
+        ],
+        "certifications": [
+          {
+            "certification_id": "CERT001",
+            "certification_name": "AWS Solutions Architect Associate",
+            "issuing_authority": "Amazon Web Services",
+            "issue_date": "2024-05-15",
+            "credential_link": "https://aws.amazon.com/certification"
+          }
+        ]
+      }
+    },
+    "sample_company": {
+      "company_id": "COM001",
+      "user_id": "USR002",
+      "company_name": "Tech Innovations India",
+      "industry_type": "IT Services",
+      "company_size": "201-500",
+      "headquarters_location": "Bangalore, India",
+      "website": "https://www.techinnovations.com",
+      "founded_year": 2015,
+      "description": "We are a leading IT services and solutions provider focusing on digital transformation.",
+      "company_verified": true,
+      "hr_contact_name": "Priya Sharma",
+      "hr_email": "careers@techinnovations.com",
+      "hr_phone": "+91-XXXXXXXXXX"
+    },
+    "sample_internship": {
+      "internship_id": "INT001",
+      "company_id": "COM001",
+      "title": "Full-Stack Developer Intern",
+      "description": "Join our development team to build scalable web applications. You'll work on real projects and learn from experienced developers.",
+      "duration_months": 3,
+      "skills_required": [
+        {
+          "skill_id": "TECH001",
+          "proficiency_level": 2
+        },
+        {
+          "skill_id": "TECH002",
+          "proficiency_level": 2
+        },
+        {
+          "skill_id": "TECH003",
+          "proficiency_level": 1
+        }
+      ],
+      "location": "Bangalore",
+      "is_remote": true,
+      "stipend": 25000,
+      "stipend_currency": "INR",
+      "start_date": "2026-07-01",
+      "application_deadline": "2026-10-15",
+      "no_of_positions": 5,
+      "benefits": [
+        "Certificate of completion",
+        "Letter of recommendation",
+        "Possibility of conversion to full-time",
+        "Mentorship from senior developers"
+      ],
+      "status": "open",
+      "posted_date": "2026-08-15"
+    },
+    "sample_job": {
+      "job_id": "JOB001",
+      "company_id": "COM001",
+      "title": "Senior Software Engineer",
+      "description": "We are looking for a talented Senior Software Engineer to lead our backend team. You should have 5+ years of experience in software development and expertise in Python and cloud technologies.",
+      "experience_required_years": 5,
+      "skills_required": [
+        {
+          "skill_id": "TECH001",
+          "proficiency_level": 4
+        },
+        {
+          "skill_id": "TECH004",
+          "proficiency_level": 4
+        },
+        {
+          "skill_id": "TECH005",
+          "proficiency_level": 3
+        }
+      ],
+      "location": "Bangalore",
+      "is_remote": true,
+      "salary_min": 1200000,
+      "salary_max": 1800000,
+      "salary_currency": "INR",
+      "job_type": "full-time",
+      "application_deadline": "2026-12-31",
+      "no_of_positions": 2,
+      "benefits": [
+        "Health Insurance",
+        "Performance Bonus",
+        "Learning & Development Budget",
+        "Flexible Work Hours"
+      ],
+      "status": "open"
+    },
+    "sample_application": {
+      "application_id": "APP001",
+      "student_id": "STU001",
+      "opportunity_id": "INT001",
+      "opportunity_type": "internship",
+      "application_date": "2026-09-01",
+      "cover_letter": "I am very interested in this internship opportunity. I have solid experience in Python and JavaScript, and I am eager to learn React and grow as a developer.",
+      "status": "under_review",
+      "match_score": 92,
+      "company_response": "Pending review",
+      "interview_date": null,
+      "interview_link": null,
+      "final_status": "pending"
+    },
+    "sample_mock_test": {
+      "test_id": "TEST001",
+      "test_name": "Programming Fundamentals - C++",
+      "test_category": "technical",
+      "description": "Test your knowledge of C++ programming including syntax, data structures, and algorithms.",
+      "total_questions": 40,
+      "duration_minutes": 60,
+      "difficulty_level": "medium",
+      "passing_score": 70,
+      "status": "published",
+      "created_date": "2026-08-01",
+      "questions": [
+        {
+          "question_id": "Q001",
+          "question_text": "What is the time complexity of binary search?",
+          "question_type": "multiple_choice",
+          "options": [
+            "O(n)",
+            "O(n²)",
+            "O(log n)",
+            "O(1)"
+          ],
+          "correct_answer": "O(log n)",
+          "explanation": "Binary search divides the array in half with each comparison, resulting in logarithmic time complexity.",
+          "marks": 1,
+          "difficulty_level": "easy"
+        }
+      ]
+    },
+    "sample_learning_program": {
+      "program_id": "LP001",
+      "company_id": "COM001",
+      "program_name": "Advanced Python for Data Science",
+      "description": "A comprehensive program covering advanced Python concepts, data manipulation with Pandas, and data visualization.",
+      "duration_hours": 40,
+      "schedule": "Weekends, 2 hours per session",
+      "skills_covered": [
+        "TECH001",
+        "Python Advanced Concepts",
+        "Data Analysis",
+        "Data Visualization"
+      ],
+      "target_audience": "fresher",
+      "certification_offered": true,
+      "certification_provider": "Tech Innovations India",
+      "enrollment_limit": 50,
+      "enrolled_count": 35,
+      "cost": 0,
+      "start_date": "2026-09-15",
+      "end_date": "2026-11-30",
+      "program_type": "course",
+      "materials_provided": [
+        "Video lectures",
+        "Source code examples",
+        "Practice assignments",
+        "Certificate of completion"
+      ]
+    },
+    "industry_roles_mapping": {
+      "IT Services": {
+        "junior_developer": {
+          "title": "Junior Software Developer",
+          "experience_required": 0,
+          "avg_salary": 400000,
+          "required_skills": ["TECH001", "TECH002", "TECH004"],
+          "soft_skills": ["SOFT001", "SOFT003"]
+        },
+        "senior_developer": {
+          "title": "Senior Software Developer",
+          "experience_required": 5,
+          "avg_salary": 1200000,
+          "required_skills": ["TECH001", "TECH002", "TECH004", "TECH005"],
+          "soft_skills": ["SOFT001", "SOFT002", "SOFT004"]
+        }
+      },
+      "Fintech": {
+        "backend_engineer": {
+          "title": "Backend Engineer",
+          "experience_required": 2,
+          "avg_salary": 900000,
+          "required_skills": ["TECH001", "TECH004", "TECH005"],
+          "soft_skills": ["SOFT001", "SOFT003"]
+        }
+      }
+    },
+    "assessment_result_template": {
+      "assessment_id": "ASS001",
+      "student_id": "STU001",
+      "completion_date": "2026-09-06",
+      "total_score": 78,
+      "skill_profile": {
+        "technical_skills": {
+          "programming": 85,
+          "web_development": 78,
+          "databases": 72,
+          "frameworks": 68,
+          "devops": 60
+        },
+        "soft_skills": {
+          "communication": 82,
+          "teamwork": 79,
+          "problem_solving": 85,
+          "leadership": 72
+        },
+        "aptitude": {
+          "verbal": 80,
+          "quantitative": 75,
+          "logical": 82
+        }
+      },
+      "industry_comparison": {
+        "avg_score": 72,
+        "percentile": 78,
+        "your_rank": 1250
+      },
+      "skill_gaps": [
+        "Advanced Database Design",
+        "Cloud Technologies (AWS, Azure)",
+        "DevOps Practices",
+        "Microservices Architecture"
+      ],
+      "strengths": [
+        "Problem-solving ability",
+        "Communication skills",
+        "Programming fundamentals",
+        "Logical reasoning"
+      ],
+      "recommendations": [
+        {
+          "skill": "AWS Certification",
+          "resource": "AWS Free Tier",
+          "duration": "3 months",
+          "difficulty": "medium"
+        },
+        {
+          "skill": "Docker & Kubernetes",
+          "resource": "Udemy Course",
+          "duration": "2 months",
+          "difficulty": "hard"
+        },
+        {
+          "skill": "System Design",
+          "resource": "Books & LeetCode",
+          "duration": "4 months",
+          "difficulty": "hard"
+        }
+      ]
+    }
+  }
+}
