@@ -1,9 +1,12 @@
 {
   "name": "placepro-root",
   "private": true,
+  "workspaces": [
+    "placepro"
+  ],
   "scripts": {
     "dev": "npm run dev --prefix placepro",
-    "build": "npm run build --prefix placepro",
+    "build": "cd placepro && npm install && npm run build",
     "lint": "npm run lint --prefix placepro",
     "preview": "npm run preview --prefix placepro"
   }
