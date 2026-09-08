@@ -45,8 +45,22 @@ export default function IndustryPortal({
   }, []);
 
   useEffect(() => {
-    loadCandidates();
-  }, [loadCandidates]);
+    let isMounted = true;
+    (async () => {
+      try {
+        setLoadingCandidates(true);
+        const res = await api.industry.getCandidates();
+        if (isMounted && Array.isArray(res)) {
+          setCandidates(res);
+        }
+      } catch (err) {
+        console.error('Failed to load candidate ATS list:', err);
+      } finally {
+        if (isMounted) setLoadingCandidates(false);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

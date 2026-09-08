@@ -87,8 +87,46 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetchAllData();
-  }, [fetchAllData]);
+    let isMounted = true;
+    (async () => {
+      try {
+        const [
+          profileRes,
+          gapsRes,
+          oppsRes,
+          learningRes,
+          analyticsRes
+        ] = await Promise.allSettled([
+          api.student.getProfile(),
+          api.student.getGaps(),
+          api.opportunities.getAll(),
+          api.student.getLearningPath(),
+          api.institution.getAnalytics()
+        ]);
+
+        if (!isMounted) return;
+
+        if (profileRes.status === 'fulfilled') {
+          setStudentProfile(profileRes.value);
+        }
+        if (gapsRes.status === 'fulfilled') {
+          setSkillGaps(gapsRes.value?.gaps || []);
+        }
+        if (oppsRes.status === 'fulfilled') {
+          setOpportunities(oppsRes.value || []);
+        }
+        if (learningRes.status === 'fulfilled') {
+          setLearningModules(learningRes.value?.modules || []);
+        }
+        if (analyticsRes.status === 'fulfilled') {
+          setInstitutionAnalytics(analyticsRes.value);
+        }
+      } catch (err) {
+        console.error('Error loading PlacePro live data:', err);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
 
   // Switch Portal Role
   const handleRoleChange = async (role) => {

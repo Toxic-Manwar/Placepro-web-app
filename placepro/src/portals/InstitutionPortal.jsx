@@ -18,7 +18,8 @@ import api from '../services/apiClient';
 
 export default function InstitutionPortal({ analyticsData, onRefreshData, onShowToast }) {
   const [data, setData] = useState(analyticsData || null);
-  const [proposals, setProposals] = useState([]);
+  const [proposals, setProposals] = useState(() => analyticsData?.proposals || []);
+  const [loading, setLoading] = useState(false);
   const [isProposalModalOpen, setIsProposalModalOpen] = useState(false);
   const [submittingProposal, setSubmittingProposal] = useState(false);
 
@@ -29,6 +30,8 @@ export default function InstitutionPortal({ analyticsData, onRefreshData, onShow
     description: '',
     targetSemester: 'Fall 2026'
   });
+
+  const currentData = analyticsData || data;
 
   const loadData = async () => {
     try {
@@ -51,13 +54,29 @@ export default function InstitutionPortal({ analyticsData, onRefreshData, onShow
   };
 
   useEffect(() => {
-    if (analyticsData) {
-      setData(analyticsData);
-      if (analyticsData.proposals && Array.isArray(analyticsData.proposals)) {
-        setProposals(analyticsData.proposals);
-      }
-    } else {
-      loadData();
+    if (!analyticsData) {
+      let isMounted = true;
+      (async () => {
+        try {
+          setLoading(true);
+          const [res, propRes] = await Promise.allSettled([
+            api.institution.getAnalytics(),
+            api.institution.getCurriculumProposals()
+          ]);
+          if (!isMounted) return;
+          if (res.status === 'fulfilled') {
+            setData(res.value);
+          }
+          if (propRes.status === 'fulfilled' && Array.isArray(propRes.value)) {
+            setProposals(propRes.value);
+          }
+        } catch (err) {
+          console.error('Failed to load institution analytics:', err);
+        } finally {
+          if (isMounted) setLoading(false);
+        }
+      })();
+      return () => { isMounted = false; };
     }
   }, [analyticsData]);
 
@@ -109,9 +128,17 @@ export default function InstitutionPortal({ analyticsData, onRefreshData, onShow
     }
   };
 
-  const marketMetrics = data?.marketMetrics || [];
-  const alerts = data?.curriculumAlerts || [];
-  const departmentData = data?.departmentPlacement || [];
+  const marketMetrics = currentData?.marketMetrics || [];
+  const alerts = currentData?.curriculumAlerts || [];
+  const departmentData = currentData?.departmentPlacement || [];
+
+  if (loading && !currentData) {
+    return (
+      <div className="view-section active" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '300px' }}>
+        <p style={{ color: 'var(--text-secondary)' }}>Loading University Placement & Curriculum Command...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="view-section active">
@@ -120,7 +147,7 @@ export default function InstitutionPortal({ analyticsData, onRefreshData, onShow
         <div>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>University Placement & Curriculum Command</h2>
           <p style={{ color: 'var(--text-secondary)' }}>
-            {data?.institutionName || 'Takshashila Institute of Technology'} • Live Macro Demand/Supply Analytics & Curriculum Actions
+            {currentData?.institutionName || 'Takshashila Institute of Technology'} • Live Macro Demand/Supply Analytics & Curriculum Actions
           </p>
         </div>
         <button className="btn btn-primary" onClick={() => handleOpenProposal('')}>
@@ -133,7 +160,7 @@ export default function InstitutionPortal({ analyticsData, onRefreshData, onShow
         <div className="stat-card">
           <div className="stat-info">
             <div className="stat-label">Total Students Enrolled</div>
-            <div className="stat-value">{data?.totalStudentsEnrolled || 2} Active</div>
+            <div className="stat-value">{currentData?.totalStudentsEnrolled || 2} Active</div>
           </div>
           <div className="stat-icon-wrapper stat-icon-indigo">
             <GraduationCap size={22} />

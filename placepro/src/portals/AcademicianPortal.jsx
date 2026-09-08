@@ -29,8 +29,22 @@ export default function AcademicianPortal({ onRefreshData, onShowToast }) {
   }, []);
 
   useEffect(() => {
-    loadStudents();
-  }, [loadStudents]);
+    let isMounted = true;
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await api.institution.getStudents();
+        if (isMounted && Array.isArray(res)) {
+          setStudents(res);
+        }
+      } catch (err) {
+        console.error('Failed to load students for faculty review:', err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
 
   const handleVerify = async (studentId, skillId, skillName) => {
     try {
