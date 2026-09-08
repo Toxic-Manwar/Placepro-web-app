@@ -599,7 +599,7 @@ function applyForOpportunity(oppId) {
   });
 
   renderAllViews();
-  alert(`🎉 Successfully applied for ${opp.title} at ${opp.company}! Your application status is now live.`);
+  showToast(`🎉 Successfully applied for ${opp.title} at ${opp.company}! Your application status is now live.`, 'success');
 }
 
 function filterOpportunities(searchTerm) {
@@ -617,7 +617,74 @@ function renderAllViews() {
   if (appCountBadge) appCountBadge.innerText = AppState.applications.length;
 }
 
+// Modern Non-Blocking Floating Toast Notification System
+function showToast(message, type = 'success') {
+  let container = document.getElementById('placepro-toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'placepro-toast-container';
+    container.style.cssText = 'position: fixed; bottom: 24px; right: 24px; z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 440px; pointer-events: none;';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  const borderColor = type === 'error' ? 'rgba(239, 68, 68, 0.5)' : type === 'warning' ? 'rgba(245, 158, 11, 0.5)' : 'rgba(99, 102, 241, 0.5)';
+  const glowColor = type === 'error' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(99, 102, 241, 0.25)';
+
+  toast.style.cssText = `
+    pointer-events: auto;
+    background: #0f172a;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid ${borderColor};
+    border-radius: 14px;
+    padding: 16px 20px;
+    color: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px ${glowColor};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    transform: translateX(120%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    opacity: 0;
+  `;
+
+  toast.innerHTML = `
+    <div style="flex: 1; word-break: break-word;">${message}</div>
+    <button style="background: none; border: none; color: #94a3b8; font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 0 4px; border-radius: 4px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'" onclick="this.parentElement.style.opacity='0'; setTimeout(() => this.parentElement.remove(), 250);">&times;</button>
+  `;
+
+  container.appendChild(toast);
+
+  // Trigger animation
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateX(0)';
+    toast.style.opacity = '1';
+  });
+
+  // Auto-dismiss after 4.5 seconds
+  setTimeout(() => {
+    if (toast && toast.parentElement) {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(12px)';
+      setTimeout(() => toast.remove(), 300);
+    }
+  }, 4500);
+}
+
+// Override native window.alert to completely prevent browser popups
+window.alert = function(message) {
+  showToast(message, 'info');
+};
+
 // Quick Global Helpers for Demo
+window.showToast = showToast;
 window.switchPortal = switchPortal;
 window.showTab = showTab;
 window.openModal = openModal;

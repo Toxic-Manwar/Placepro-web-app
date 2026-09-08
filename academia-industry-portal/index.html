@@ -802,7 +802,7 @@
         </div>
 
         <div class="card" style="max-width: 800px;">
-          <form onsubmit="event.preventDefault(); alert('🚀 Opportunity successfully published to the candidate network!'); showTab('industry-dashboard');">
+          <form onsubmit="event.preventDefault(); showToast('🚀 Opportunity successfully published to the candidate network!', 'success'); showTab('industry-dashboard');">
             <div class="form-group">
               <label class="form-label">Position Title *</label>
               <input type="text" class="form-control" placeholder="e.g. Junior Backend Engineer" required>
@@ -969,7 +969,7 @@
         <button class="close-modal-btn" onclick="closeModal('registerModal')">&times;</button>
       </div>
 
-      <form onsubmit="event.preventDefault(); alert('🎉 Account created! Verification email sent.'); closeModal('registerModal');">
+      <form onsubmit="event.preventDefault(); showToast('🎉 Account created! Verification email sent.', 'success'); closeModal('registerModal');">
         <div class="form-group">
           <label class="form-label">I am joining as a:</label>
           <select class="form-control">
@@ -1029,8 +1029,8 @@
       </div>
 
       <div style="display: flex; gap: 12px;">
-        <button class="btn btn-secondary" style="flex: 1;" onclick="alert('Interview Scheduled for John Developer!'); closeModal('applicantModal');">📅 Schedule Video Interview</button>
-        <button class="btn btn-primary" style="flex: 1;" onclick="alert('Offer Letter Dispatched!'); closeModal('applicantModal');">🎉 Send Offer Letter</button>
+        <button class="btn btn-secondary" style="flex: 1;" onclick="showToast('📅 Video Interview invitation dispatched to John Developer!', 'info'); closeModal('applicantModal');">📅 Schedule Video Interview</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="showToast('🎉 Formal Offer Letter Dispatched!', 'success'); closeModal('applicantModal');">🎉 Send Offer Letter</button>
       </div>
     </div>
   </div>
@@ -1052,7 +1052,7 @@
         https://collabnexus.edu/portfolio/john-developer-cse
       </div>
 
-      <button class="btn btn-primary" style="width: 100%;" onclick="navigator.clipboard.writeText('https://collabnexus.edu/portfolio/john-developer-cse'); alert('Copied to clipboard!');">📋 Copy Public Link</button>
+      <button class="btn btn-primary" style="width: 100%;" onclick="navigator.clipboard.writeText('https://collabnexus.edu/portfolio/john-developer-cse'); showToast('📋 Public link copied to clipboard!', 'success');">📋 Copy Public Link</button>
     </div>
   </div>
 
@@ -1111,7 +1111,7 @@
         <label class="form-label">Describe your query</label>
         <textarea class="form-control" rows="3" placeholder="How can we help you?"></textarea>
       </div>
-      <button class="btn btn-primary" style="width: 100%;" onclick="alert('Ticket submitted! Our team will respond within 2 hours.'); closeModal('helpModal');">Submit Ticket</button>
+      <button class="btn btn-primary" style="width: 100%;" onclick="showToast('📨 Support ticket submitted! Our team will respond within 2 hours.', 'success'); closeModal('helpModal');">Submit Ticket</button>
     </div>
   </div>
 
