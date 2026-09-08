@@ -13,9 +13,10 @@
     "build:frontend": "npm run build --prefix placepro",
     "build": "npm run render-build",
     "build:all": "npm run build:frontend && npm run build:backend",
-    "render-build": "npm run prisma:generate --prefix backend && npm run prisma:push --prefix backend && npm run prisma:seed --prefix backend && npm run build:frontend && npm run build:backend",
-    "start": "node backend/dist/server.js",
-    "start:prod": "node backend/dist/server.js",
+    "render-build": "npm run prisma:generate --prefix backend && npm run build:frontend && npm run build:backend",
+    "start": "npm run start:render",
+    "start:prod": "npm run start:render",
+    "start:render": "npm run db:deploy --prefix backend && npm run prisma:seed --prefix backend && node backend/dist/server.js",
     "test:engines": "npm test --prefix backend",
     "seed": "npm run prisma:seed --prefix backend",
     "lint": "npm run lint --prefix placepro"

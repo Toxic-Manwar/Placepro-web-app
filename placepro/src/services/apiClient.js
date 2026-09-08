@@ -3,7 +3,8 @@
  * Connects the React UI to the PlacePro Backend & Database
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const rawApiUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 class ApiClient {
   constructor() {

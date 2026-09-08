@@ -1,4 +1,4 @@
-# PlacePro - Render Deployment Configuration (Blueprint)
+# PlacePro - Production Render Blueprint (Infrastructure as Code)
 # https://render.com/docs/blueprint-spec
 
 services:
@@ -6,6 +6,7 @@ services:
     name: placepro-app
     runtime: node
     plan: free
+    region: oregon
     buildCommand: npm run render-build
     startCommand: npm run start:prod
     healthCheckPath: /api/health
@@ -18,4 +19,13 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_URL
-        value: file:./dev.db
+        fromDatabase:
+          name: placepro-db
+          property: connectionString
+
+databases:
+  - name: placepro-db
+    plan: free
+    region: oregon
+    databaseName: placepro
+    user: placepro_user

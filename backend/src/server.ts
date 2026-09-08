@@ -18,9 +18,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
-app.use(cors());
+// Configurable CORS support
+const configuredOrigin = process.env.CORS_ORIGIN || process.env.FRONTEND_URL;
+if (configuredOrigin && configuredOrigin !== '*') {
+  const allowedOrigins = configuredOrigin.split(',').map(s => s.trim());
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
+    credentials: true
+  }));
+} else {
+  app.use(cors());
+}
+
 app.use(express.json());
 
 // Health Check
@@ -91,8 +107,8 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 const isTestMode = process.env.NODE_ENV === 'test' || process.argv.some(arg => arg.includes('test') || arg.includes('vitest'));
 
 if (!isTestMode) {
-  app.listen(PORT, () => {
-    console.log(`🚀 PlacePro API Server running on port ${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 PlacePro API Server running on port ${PORT} (bound to 0.0.0.0)`);
   });
 }
 

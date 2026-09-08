@@ -9,9 +9,13 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
+    "prisma:generate": "node prisma/generate.mjs",
+    "prisma:generate:sqlite": "prisma generate --schema=prisma/schema.sqlite.prisma",
+    "prisma:push": "node prisma/deploy.mjs",
+    "prisma:push:sqlite": "prisma db push --schema=prisma/schema.sqlite.prisma",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
+    "db:deploy": "node prisma/deploy.mjs",
     "test": "vitest run"
   },
   "dependencies": {
