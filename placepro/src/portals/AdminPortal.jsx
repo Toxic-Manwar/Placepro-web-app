@@ -6,7 +6,13 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-export default function AdminPortal() {
+export default function AdminPortal({ onShowToast }) {
+  const notify = (title, message) => {
+    if (onShowToast) {
+      onShowToast({ type: 'info', title, message });
+    }
+  };
+
   return (
     <div className="view-section active">
       <div style={{ marginBottom: '24px' }}>
@@ -28,7 +34,10 @@ export default function AdminPortal() {
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
             Verify corporate registration documents, tax IDs, and authorized HR credentials.
           </p>
-          <button className="btn btn-secondary btn-sm" onClick={() => alert('Opening KYC approval queue.')}>
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => notify('KYC Approvals', '14 corporate registrations awaiting review.')}
+          >
             Review KYC Queue <ChevronRight size={14} />
           </button>
         </div>
@@ -44,7 +53,10 @@ export default function AdminPortal() {
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
             Manage technical, soft skill hierarchies, proficiency benchmarks, and role maps.
           </p>
-          <button className="btn btn-secondary btn-sm" onClick={() => alert('Opening Skills taxonomy manager.')}>
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => notify('Skills Taxonomy', 'Hierarchical taxonomy active for 150+ competencies.')}
+          >
             Manage Taxonomy <ChevronRight size={14} />
           </button>
         </div>
@@ -60,7 +72,10 @@ export default function AdminPortal() {
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
             Zero security anomalies detected across API endpoints in the past 30 days.
           </p>
-          <button className="btn btn-outline btn-sm" onClick={() => alert('Downloading system audit logs.')}>
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={() => notify('Audit Logs', 'Exporting real-time system audit logs.')}
+          >
             View Audit Logs <ChevronRight size={14} />
           </button>
         </div>

@@ -17,7 +17,8 @@ export default function Navbar({
   onRoleChange,
   searchTerm,
   onSearchChange,
-  onOpenModal
+  onOpenModal,
+  currentUser
 }) {
   const roles = [
     { id: 'public', label: 'Home', icon: Globe },
@@ -87,10 +88,14 @@ export default function Navbar({
         </button>
 
         <div className="user-chip" onClick={() => onOpenModal('profile')}>
-          <div className="user-avatar">JD</div>
+          <div className="user-avatar">
+            {currentUser?.fullName ? currentUser.fullName.split(' ').map((n) => n[0]).join('') : 'JD'}
+          </div>
           <div className="user-name-role">
-            <span className="user-name">John Developer</span>
-            <span className="user-role-tag">Student Member</span>
+            <span className="user-name">{currentUser?.fullName || 'John Developer'}</span>
+            <span className="user-role-tag">
+              {currentRole === 'student' ? 'Student Member' : currentRole === 'industry' ? 'Corporate Recruiter' : currentRole === 'institution' ? 'University TPO' : 'Faculty Member'}
+            </span>
           </div>
         </div>
       </div>

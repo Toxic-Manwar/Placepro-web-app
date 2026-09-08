@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function PlacementBarChart() {
+export default function PlacementBarChart({ departmentData }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -9,13 +9,18 @@ export default function PlacementBarChart() {
     const ctx = canvas.getContext('2d');
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const data = [
-      { label: 'CSE', rate: 96 },
-      { label: 'IT', rate: 92 },
-      { label: 'ECE', rate: 88 },
-      { label: 'Mech', rate: 78 },
-      { label: 'Civil', rate: 74 }
-    ];
+    const data = departmentData && departmentData.length > 0
+      ? departmentData.map((d) => ({
+          label: d.department || d.label,
+          rate: Math.round(d.rate !== undefined ? d.rate : ((d.placed / Math.max(1, d.total)) * 100))
+        }))
+      : [
+          { label: 'CSE', rate: 96 },
+          { label: 'IT', rate: 92 },
+          { label: 'ECE', rate: 88 },
+          { label: 'Mech', rate: 78 },
+          { label: 'Civil', rate: 74 }
+        ];
 
     const barWidth = 40;
     const gap = 36;
@@ -50,7 +55,7 @@ export default function PlacementBarChart() {
       ctx.fillStyle = '#94a3b8';
       ctx.fillText(item.label, x + barWidth / 2, canvas.height - 10);
     });
-  }, []);
+  }, [departmentData]);
 
   return (
     <div style={{ width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}>

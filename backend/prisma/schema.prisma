@@ -1,0 +1,378 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  INDUSTRY
+  ACADEMICIAN
+  INSTITUTION
+  ADMIN
+}
+
+enum SkillCategory {
+  TECHNICAL
+  SOFT
+  DOMAIN
+  APTITUDE
+}
+
+enum VerificationTier {
+  SELF_REPORTED
+  ASSESSMENT_VERIFIED
+  INSTITUTION_VERIFIED
+  INDUSTRY_VERIFIED
+}
+
+enum OpportunityType {
+  INTERNSHIP
+  JOB
+}
+
+enum ApplicationStatus {
+  APPLIED
+  UNDER_REVIEW
+  SHORTLISTED
+  INTERVIEW_SCHEDULED
+  OFFER
+  REJECTED
+}
+
+enum LearningStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  passwordHash String
+  fullName     String
+  role         String      @default("STUDENT") // STUDENT, INDUSTRY, ACADEMICIAN, INSTITUTION, ADMIN
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  student      StudentProfile?
+  industry     IndustryProfile?
+  academician  AcademicianProfile?
+  institution  InstitutionProfile?
+  notifications Notification[]
+
+  @@index([role])
+}
+
+model InstitutionProfile {
+  id             String            @id @default(uuid())
+  userId         String            @unique
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institutionName String
+  code           String            @unique
+  city           String
+  state          String
+  placementRate  Float             @default(0.0)
+  avgPackageLpa  Float             @default(0.0)
+
+  students       StudentProfile[]
+  academicians   AcademicianProfile[]
+  placementRecords PlacementRecord[]
+  curriculumProposals CurriculumProposal[]
+}
+
+model StudentProfile {
+  id             String             @id @default(uuid())
+  userId         String             @unique
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institutionId  String
+  institution    InstitutionProfile @relation(fields: [institutionId], references: [id])
+  regNumber      String             @unique
+  department     String
+  semester       Int                @default(6)
+  cgpa           Float              @default(8.0)
+  targetRole     String             @default("Full-Stack Cloud Engineer")
+  placementReadiness Float          @default(70.0)
+  passportId     String             @unique @default(uuid())
+
+  skills         StudentSkill[]
+  assessmentResults AssessmentResult[]
+  learningProgress StudentLearning[]
+  applications   Application[]
+  projects       Project[]
+  certifications Certification[]
+
+  @@index([institutionId])
+  @@index([department])
+}
+
+model IndustryProfile {
+  id             String        @id @default(uuid())
+  userId         String        @unique
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName    String
+  logoText       String        @default("CO")
+  industryType   String        @default("Technology & Software")
+  location       String
+  isVerified     Boolean       @default(true)
+
+  opportunities  Opportunity[]
+
+  @@index([companyName])
+}
+
+model AcademicianProfile {
+  id             String             @id @default(uuid())
+  userId         String             @unique
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institutionId  String
+  institution    InstitutionProfile @relation(fields: [institutionId], references: [id])
+  department     String
+  designation    String
+  specialization String
+
+  @@index([institutionId])
+}
+
+model Skill {
+  id               String             @id @default(uuid())
+  name             String             @unique
+  category         String             @default("TECHNICAL") // TECHNICAL, SOFT, DOMAIN, APTITUDE
+  industryDemandWeight Float          @default(1.0)
+
+  studentSkills    StudentSkill[]
+  opportunitySkills OpportunitySkill[]
+  learningResources LearningResource[]
+  assessmentQuestions AssessmentQuestion[]
+}
+
+model StudentSkill {
+  id                  String                  @id @default(uuid())
+  studentId           String
+  student             StudentProfile          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  skillId             String
+  skill               Skill                   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  proficiency         Int                     @default(50) // 0 - 100
+  verificationTier    String                  @default("SELF_REPORTED") // SELF_REPORTED, ASSESSMENT_VERIFIED, INSTITUTION_VERIFIED, INDUSTRY_VERIFIED
+  lastAssessedAt      DateTime?
+  verificationHistory VerificationHistory[]
+  industryFeedback    IndustrySkillFeedback[]
+
+  @@unique([studentId, skillId])
+  @@index([studentId])
+  @@index([skillId])
+  @@index([verificationTier])
+}
+
+model Assessment {
+  id          String               @id @default(uuid())
+  title       String
+  category    String               @default("TECHNICAL")
+  durationMins Int                 @default(10)
+
+  questions   AssessmentQuestion[]
+  results     AssessmentResult[]
+}
+
+model AssessmentQuestion {
+  id           String      @id @default(uuid())
+  assessmentId String
+  assessment   Assessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  skillId      String?
+  skill        Skill?      @relation(fields: [skillId], references: [id])
+  questionText String
+  optionsJson  String      // JSON array of strings
+  correctIndex Int
+  explanation  String?
+}
+
+model AssessmentResult {
+  id           String         @id @default(uuid())
+  studentId    String
+  student      StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assessmentId String
+  assessment   Assessment     @relation(fields: [assessmentId], references: [id])
+  score        Int            // 0 - 100
+  answersJson  String         // JSON record
+  completedAt  DateTime       @default(now())
+}
+
+model LearningResource {
+  id          String            @id @default(uuid())
+  skillId     String
+  skill       Skill             @relation(fields: [skillId], references: [id])
+  title       String
+  provider    String
+  duration    String
+  level       String            @default("Intermediate")
+  url         String            @default("#")
+
+  studentProgress StudentLearning[]
+}
+
+model StudentLearning {
+  id           String           @id @default(uuid())
+  studentId    String
+  student      StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  resourceId   String
+  resource     LearningResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  status       String           @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED
+  progressPct  Int              @default(0)
+  completedAt  DateTime?
+
+  @@unique([studentId, resourceId])
+}
+
+model Opportunity {
+  id             String             @id @default(uuid())
+  companyId      String
+  company        IndustryProfile    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  type           String             @default("INTERNSHIP") // INTERNSHIP, JOB
+  title          String
+  description    String
+  location       String
+  isRemote       Boolean            @default(true)
+  duration       String             @default("3 months")
+  stipend        String
+  minCgpa        Float              @default(7.0)
+  deadline       DateTime
+  createdAt      DateTime           @default(now())
+
+  requiredSkills OpportunitySkill[]
+  applications   Application[]
+
+  @@index([companyId])
+  @@index([type])
+}
+
+model OpportunitySkill {
+  id            String      @id @default(uuid())
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  skillId       String
+  skill         Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  minLevel      Int         @default(60) // 0 - 100
+  weight        Float       @default(1.0)
+
+  @@unique([opportunityId, skillId])
+  @@index([skillId])
+}
+
+model Application {
+  id             String            @id @default(uuid())
+  opportunityId  String
+  opportunity    Opportunity       @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  studentId      String
+  student        StudentProfile    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status         String            @default("APPLIED") // APPLIED, UNDER_REVIEW, SHORTLISTED, INTERVIEW_SCHEDULED, OFFER, REJECTED
+  matchScore     Float             @default(0.0)
+  matchBreakdown String            // JSON string containing 6-factor breakdown & gap diff
+  appliedAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@unique([opportunityId, studentId])
+  @@index([studentId])
+  @@index([opportunityId])
+  @@index([status])
+}
+
+model Project {
+  id          String         @id @default(uuid())
+  studentId   String
+  student     StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  skillsJson  String         // JSON array of strings
+  isVerified  Boolean        @default(false)
+}
+
+model Certification {
+  id          String         @id @default(uuid())
+  studentId   String
+  student     StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  name        String
+  issuer      String
+  issuedDate  String
+  isVerified  Boolean        @default(true)
+}
+
+model PlacementRecord {
+  id            String             @id @default(uuid())
+  institutionId String
+  institution   InstitutionProfile @relation(fields: [institutionId], references: [id])
+  department    String
+  placedCount   Int
+  totalCount    Int
+  placementRate Float
+  academicYear  String             @default("2025-2026")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model VerificationHistory {
+  id             String       @id @default(uuid())
+  studentSkillId String
+  studentSkill   StudentSkill @relation(fields: [studentSkillId], references: [id], onDelete: Cascade)
+  fromTier       String
+  toTier         String
+  verifierId     String
+  verifierName   String
+  verifierRole   String       // SYSTEM_ASSESSMENT, ACADEMICIAN, INSTITUTION, INDUSTRY, ADMIN
+  evidenceNotes  String?
+  createdAt      DateTime     @default(now())
+
+  @@index([studentSkillId])
+  @@index([createdAt])
+}
+
+model IndustrySkillFeedback {
+  id              String       @id @default(uuid())
+  studentSkillId  String
+  studentSkill    StudentSkill @relation(fields: [studentSkillId], references: [id], onDelete: Cascade)
+  companyId       String?
+  companyName     String
+  evaluatorId     String
+  evaluatorName   String
+  rating          Int          // 0 - 100
+  feedbackText    String
+  interactionType String       @default("INTERVIEW") // INTERVIEW, INTERNSHIP, TECHNICAL_EVALUATION
+  createdAt       DateTime     @default(now())
+
+  @@index([studentSkillId])
+  @@index([createdAt])
+}
+
+model CurriculumProposal {
+  id             String             @id @default(uuid())
+  institutionId  String
+  institution    InstitutionProfile @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  skillName      String
+  actionType     String             // CURRICULUM_REVISION, INDUSTRY_WORKSHOP, FACULTY_TRAINING, INDUSTRY_FDP
+  title          String
+  description    String
+  targetSemester String             @default("Fall 2026")
+  status         String             @default("PROPOSED") // PROPOSED, UNDER_REVIEW, APPROVED, IMPLEMENTED
+  createdBy      String
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([institutionId])
+  @@index([skillName])
+  @@index([status])
+}
+

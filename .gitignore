@@ -17,6 +17,12 @@ build/
 .env.*
 !.env.example
 
+# Local SQLite databases
+*.db
+*.db-journal
+*.sqlite
+dev.db
+
 # Logs
 logs
 *.log

@@ -1,0 +1,21 @@
+# PlacePro - Render Deployment Configuration (Blueprint)
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: placepro-app
+    runtime: node
+    plan: free
+    buildCommand: npm run render-build
+    startCommand: npm run start:prod
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: file:./dev.db

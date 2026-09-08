@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Modals from './components/Modals';
+import ToastContainer from './components/Toast';
 
 import PublicLanding from './portals/PublicLanding';
 import StudentPortal from './portals/StudentPortal';
@@ -10,66 +11,177 @@ import AcademicianPortal from './portals/AcademicianPortal';
 import InstitutionPortal from './portals/InstitutionPortal';
 import AdminPortal from './portals/AdminPortal';
 
-import {
-  INITIAL_ASSESSMENT,
-  INITIAL_OPPORTUNITIES,
-  INITIAL_MOCK_TESTS,
-  INITIAL_APPLICATIONS
-} from './data/mockData';
+import api from './services/apiClient';
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState('public');
   const [currentTab, setCurrentTab] = useState('student-dashboard');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeModal, setActiveModal] = useState(null);
+  const [modalData, setModalData] = useState(null);
 
-  // Application Data State
-  const [assessment, setAssessment] = useState(INITIAL_ASSESSMENT);
-  const [opportunities, setOpportunities] = useState(INITIAL_OPPORTUNITIES);
-  const [mockTests] = useState(INITIAL_MOCK_TESTS);
-  const [applications, setApplications] = useState(INITIAL_APPLICATIONS);
+  // In-App Non-Blocking Toast Notifications State
+  const [toasts, setToasts] = useState([]);
+
+  // Live Database States
+  const [studentProfile, setStudentProfile] = useState(null);
+  const [skillGaps, setSkillGaps] = useState([]);
+  const [opportunities, setOpportunities] = useState([]);
+  const [learningModules, setLearningModules] = useState([]);
+  const [institutionAnalytics, setInstitutionAnalytics] = useState(null);
+
+  // Show Toast Helper
+  const showToast = useCallback((toastData) => {
+    const id = Date.now().toString() + Math.random().toString(36).substring(2, 5);
+    setToasts((prev) => [...prev, { id, ...toastData }]);
+  }, []);
+
+  const dismissToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  // Helper for opening modals with payload data
+  const handleOpenModal = (modalName, data = null) => {
+    setActiveModal(modalName);
+    setModalData(data);
+  };
+
+  const handleCloseModal = () => {
+    setActiveModal(null);
+    setModalData(null);
+  };
+
+  // Load All Live Data from Database
+  const fetchAllData = useCallback(async () => {
+    try {
+      setLoading(true);
+      // Ensure authenticated as demo student by default
+      await api.auth.getDemoToken('STUDENT');
+
+      const [profileRes, gapsRes, oppsRes, learningRes, analyticsRes] = await Promise.allSettled([
+        api.student.getProfile(),
+        api.student.getGaps(),
+        api.opportunities.getAll(),
+        api.student.getLearningPath(),
+        api.institution.getAnalytics()
+      ]);
+
+      if (profileRes.status === 'fulfilled') {
+        setStudentProfile(profileRes.value);
+      }
+      if (gapsRes.status === 'fulfilled') {
+        setSkillGaps(gapsRes.value?.gaps || []);
+      }
+      if (oppsRes.status === 'fulfilled') {
+        setOpportunities(oppsRes.value || []);
+      }
+      if (learningRes.status === 'fulfilled') {
+        setLearningModules(learningRes.value?.modules || []);
+      }
+      if (analyticsRes.status === 'fulfilled') {
+        setInstitutionAnalytics(analyticsRes.value);
+      }
+    } catch (err) {
+      console.error('Error loading PlacePro live data:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllData();
+  }, [fetchAllData]);
 
   // Switch Portal Role
-  const handleRoleChange = (role) => {
+  const handleRoleChange = async (role) => {
     setCurrentRole(role);
-    if (role === 'student') setCurrentTab('student-dashboard');
-    else if (role === 'industry') setCurrentTab('industry-dashboard');
-    else if (role === 'academician') setCurrentTab('academician-dashboard');
-    else if (role === 'institution') setCurrentTab('institution-dashboard');
-    else if (role === 'admin') setCurrentTab('admin-dashboard');
-    else setCurrentTab('home');
+    if (role === 'student') {
+      await api.auth.getDemoToken('STUDENT');
+      setCurrentTab('student-dashboard');
+      fetchAllData();
+    } else if (role === 'industry') {
+      await api.auth.getDemoToken('INDUSTRY');
+      setCurrentTab('industry-dashboard');
+    } else if (role === 'academician') {
+      await api.auth.getDemoToken('ACADEMICIAN');
+      setCurrentTab('academician-dashboard');
+    } else if (role === 'institution') {
+      await api.auth.getDemoToken('INSTITUTION');
+      setCurrentTab('institution-dashboard');
+    } else if (role === 'admin') {
+      setCurrentTab('admin-dashboard');
+    } else {
+      setCurrentTab('home');
+    }
   };
 
-  // 1-Click Apply Handler
-  const handleApply = (oppId) => {
+  // 1-Click Apply Handler (Custom Non-Blocking PlacePro Toast)
+  const handleApply = async (oppId) => {
     const opp = opportunities.find((o) => o.id === oppId);
-    if (!opp) return;
-
-    // Update opportunity state
-    setOpportunities((prev) =>
-      prev.map((item) => (item.id === oppId ? { ...item, applied: true, status: 'under_review' } : item))
-    );
-
-    // Add to applications
-    setApplications((prev) => [
-      {
-        id: `APP${Date.now()}`,
-        opportunityId: opp.id,
-        title: opp.title,
-        company: opp.company,
-        status: 'applied',
-        date: 'Just Now',
-        match: opp.matchScore
-      },
-      ...prev
-    ]);
-
-    alert(`Successfully applied for ${opp.title} at ${opp.company}! Your application is now live.`);
+    try {
+      await api.opportunities.apply(oppId);
+      showToast({
+        type: 'success',
+        title: 'Application Submitted',
+        subtitle: opp?.title || 'Opportunity Application',
+        company: opp?.company || 'PlacePro Partner',
+        message: 'Your application is now live.',
+        actionLabel: 'Track Applications',
+        onAction: () => {
+          handleRoleChange('student');
+          setCurrentTab('student-applications');
+        }
+      });
+      // Refresh opportunities and profile
+      fetchAllData();
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: 'Application Failed',
+        subtitle: opp?.title,
+        message: err.message || 'Could not submit application. Please try again.'
+      });
+    }
   };
 
-  // Add Opportunity Handler (for Industry Portal)
-  const handleAddOpportunity = (newOpp) => {
-    setOpportunities((prev) => [newOpp, ...prev]);
+  // Add Opportunity Handler (Industry Portal saves directly to Database)
+  const handleAddOpportunity = async (newOppData) => {
+    try {
+      await api.opportunities.create(newOppData);
+      showToast({
+        type: 'success',
+        title: 'Opportunity Published',
+        subtitle: newOppData.title,
+        message: 'The position has been posted and skill-matched to candidates.',
+        actionLabel: 'View Candidate ATS',
+        onAction: () => setCurrentTab('industry-candidates')
+      });
+      fetchAllData();
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: 'Publishing Failed',
+        message: err.message
+      });
+    }
+  };
+
+  // Update Candidate ATS Status (Industry Portal saves directly to Database)
+  const handleStatusChange = async (appId, status) => {
+    try {
+      const res = await api.industry.updateStatus(appId, status);
+      showToast({
+        type: 'success',
+        title: 'Candidate Status Updated',
+        subtitle: `Status: ${status.replace('_', ' ')}`,
+        message: res.message || 'Notification dispatched to candidate.'
+      });
+      fetchAllData();
+    } catch (err) {
+      showToast({
+        type: 'error',
+        title: 'Status Update Failed',
+        message: err.message
+      });
+    }
   };
 
   // Filtered Opportunities based on Search
@@ -79,7 +191,7 @@ export default function App() {
     return (
       o.title.toLowerCase().includes(term) ||
       o.company.toLowerCase().includes(term) ||
-      o.skills.some((s) => s.toLowerCase().includes(term))
+      (o.skills && o.skills.some((s) => s.toLowerCase().includes(term)))
     );
   });
 
@@ -98,7 +210,8 @@ export default function App() {
         onRoleChange={handleRoleChange}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        onOpenModal={setActiveModal}
+        onOpenModal={handleOpenModal}
+        currentUser={studentProfile}
       />
 
       {/* Portal Container */}
@@ -108,7 +221,7 @@ export default function App() {
             currentRole={currentRole}
             currentTab={currentTab}
             onTabChange={setCurrentTab}
-            onOpenModal={setActiveModal}
+            onOpenModal={handleOpenModal}
           />
         )}
 
@@ -116,7 +229,7 @@ export default function App() {
           {currentRole === 'public' && (
             <PublicLanding
               onRoleChange={handleRoleChange}
-              onOpenModal={setActiveModal}
+              onOpenModal={handleOpenModal}
             />
           )}
 
@@ -124,13 +237,14 @@ export default function App() {
             <StudentPortal
               currentTab={currentTab}
               onTabChange={setCurrentTab}
-              assessment={assessment}
-              setAssessment={setAssessment}
+              studentProfile={studentProfile}
+              skillGaps={skillGaps}
               opportunities={filteredOpportunities}
               onApply={handleApply}
-              mockTests={mockTests}
-              applications={applications}
-              onOpenModal={setActiveModal}
+              learningModules={learningModules}
+              onRefreshData={fetchAllData}
+              onOpenModal={handleOpenModal}
+              onShowToast={showToast}
             />
           )}
 
@@ -138,25 +252,48 @@ export default function App() {
             <IndustryPortal
               currentTab={currentTab}
               onTabChange={setCurrentTab}
-              onOpenModal={setActiveModal}
+              onOpenModal={handleOpenModal}
               onAddOpportunity={handleAddOpportunity}
+              onRefreshData={fetchAllData}
+              onStatusChange={handleStatusChange}
+              onShowToast={showToast}
             />
           )}
 
-          {currentRole === 'academician' && <AcademicianPortal />}
+          {currentRole === 'academician' && (
+            <AcademicianPortal
+              onRefreshData={fetchAllData}
+              onShowToast={showToast}
+            />
+          )}
 
-          {currentRole === 'institution' && <InstitutionPortal />}
+          {currentRole === 'institution' && (
+            <InstitutionPortal
+              analyticsData={institutionAnalytics}
+              onRefreshData={fetchAllData}
+              onShowToast={showToast}
+            />
+          )}
 
-          {currentRole === 'admin' && <AdminPortal />}
+          {currentRole === 'admin' && <AdminPortal onShowToast={showToast} />}
         </main>
       </div>
 
       {/* Interactive Modals */}
       <Modals
         activeModal={activeModal}
-        onCloseModal={() => setActiveModal(null)}
+        modalData={modalData}
+        onCloseModal={handleCloseModal}
         onRoleChange={handleRoleChange}
+        currentUser={studentProfile}
+        onApply={handleApply}
+        onStatusChange={handleStatusChange}
+        onRefreshData={fetchAllData}
+        onShowToast={showToast}
       />
+
+      {/* Global Non-Blocking In-App Toast Container */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }

@@ -2,12 +2,25 @@
   "name": "placepro-root",
   "private": true,
   "workspaces": [
-    "placepro"
+    "placepro",
+    "backend"
   ],
   "scripts": {
-    "dev": "npm run dev --prefix placepro",
-    "build": "cd placepro && npm install && npm run build",
-    "lint": "npm run lint --prefix placepro",
-    "preview": "npm run preview --prefix placepro"
+    "dev:frontend": "npm run dev --prefix placepro",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev": "concurrently -k \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:backend": "npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix placepro",
+    "build": "npm run render-build",
+    "build:all": "npm run build:frontend && npm run build:backend",
+    "render-build": "npm run prisma:generate --prefix backend && npm run prisma:push --prefix backend && npm run prisma:seed --prefix backend && npm run build:frontend && npm run build:backend",
+    "start": "node backend/dist/server.js",
+    "start:prod": "node backend/dist/server.js",
+    "test:engines": "npm test --prefix backend",
+    "seed": "npm run prisma:seed --prefix backend",
+    "lint": "npm run lint --prefix placepro"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }
